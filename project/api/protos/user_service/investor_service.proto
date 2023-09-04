@@ -1,0 +1,647 @@
+syntax="proto3";
+
+package user_service;
+option go_package="genproto/user_service";
+
+import "google/protobuf/empty.proto";
+import "investor.proto";
+
+
+service InvestorService {
+    // Investor
+    rpc InvestorLogin(InvestorLoginRequest) returns(InvestorLoginResponse) {}
+    rpc InvestorLoginWeb(InvestorLoginWebRequest) returns(InvestorLoginWebResponse) {}
+    rpc TwoFactorAutheticate(TwoFactorAuthenticateRequest) returns(TwoFactorAuthenticateResponse) {}
+    rpc GetTwoFactorAutheticate(GetTwoFactorAuthenticateRequest) returns(GetTwoFactorAuthenticateResponse) {}
+    rpc SendTwilioPhoneNumber(SendTwilioPhoneNumberRequest) returns (SendTwilioPhoneNumberResponse) {}
+    rpc CheckVerifivation(CheckVerifivationRequest) returns (CheckVerifivationResponse) {}
+    rpc InvestorConfirmEmail(InvestorConfirmEmailRequest) returns(InvestorConfirmEmailResponse) {}
+    rpc InvestorConfirmEmailWeb(InvestorConfirmEmailWebRequest) returns(InvestorConfirmEmailWebResponse) {}
+    rpc GetApplicantInfo(GetApplicantInfoRequest) returns (GetApplicantInfoResponse) {}
+    // rpc InvestorPersonalData(InvestorPersonalDataRequest) returns(InvestorPersonalDataResponse) {}
+    rpc GetInvestor(GetInvestorRequest) returns (GetInvestorResponse){}
+    rpc GetInvestorDocuments(GetInvestorDocumentsRequest) returns (GetInvestorDocumentsResponse){}
+    rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty) {}
+    rpc SaveInvestorIdentity(SaveInvestorIdentityRequest) returns (google.protobuf.Empty) {}
+
+    rpc EditProfile(UpdateProfileRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateLanguage(UpdateProfileRequest) returns (google.protobuf.Empty) {}
+
+    // KYC 
+    rpc SaveKYCData(SaveKycDataRequest) returns (google.protobuf.Empty) {}
+    rpc SaveDocumentMetadata(DocumentMetadata) returns (DocumentMetadata) {}
+    rpc GetKycData(GetKycDataRequest) returns (GetKycDataResponse) {}
+    // rpc UpdateKYCStatus(UpdateKYCStatusRequest) returns (google.protobuf.Empty) {}
+
+    // Account
+    rpc CreateAccount(CreateAccountRequest) returns (Account) {}
+    rpc GetAccount(AccountID) returns (Account) {}
+    rpc DeleteAccount(AccountID) returns (Account) {}
+    
+    //  FCM Token
+    rpc GetInvestorTokens(GetInvestorTokensRequest) returns (GetInvestorTokensResponse) {}
+    rpc GetAllInvestorTokens(UserDetail) returns(GetAllInvestorTokensResponse) {}
+    
+    // Favourite instrument(s)
+    rpc AddFavouriteInstrument(AddFavouriteInstrumentRequest) returns (FavouriteInstrument) {}
+    rpc GetFavouriteInstruments(InvestorId) returns (FavouriteInstrumentList) {}
+    rpc RemoveFromFavourite(FavouriteInstrument) returns (FavouriteInstrument) {}
+    rpc IsInstrumentFavourite(FavouriteInstrument) returns (IsInstrumentFavouriteResponse) {}
+
+    // Country
+    rpc GetCountryPhoneNumber(GetCountryPhoneNumberRequest) returns (GetCountryPhoneNumberResponse) {}
+    rpc SaveCountryFlag(SaveCountryFlagRequest) returns (Country) {}
+
+    // Webhook
+    rpc UpdateAccountFromSalesforce(UpdateAccountFromSalesforceRequest) returns (UpdateAccountFromSalesforceResponse) {}
+    rpc UpdateRegistrationStatus(UpdateAccountFromSalesforceRequest) returns (UpdateAccountFromSalesforceResponse) {}
+    rpc InvestorSearchWithUsername(InvestorSearchWithUsernameRequest)  returns (InvestorSearchWithUsernameResponse) {}
+    rpc GetKycStatus(GetKycStatusRequest) returns (GetKycStatusResponse) {}
+    rpc GetSumsubRejectComment(GetSumsubRejectCommentRequest) returns (GetSumsubRejectCommentResponse) {}
+    rpc InsertCommentsFromSumsub(SumsubCommentRequest) returns (SumsubCommentResponse) {}
+    rpc SendGmailNotification(SendGmailNotificationRequest) returns (google.protobuf.Empty) {}
+    rpc GetInvestorRegistrationStatus(GetInvestorRegistrationStatusRequest) returns (GetInvestorRegistrationStatusResponse) {}
+    rpc GetInvestorPlatform(GetInvestorPlatformRequest) returns (GetInvestorPlatformResponse) {}
+    rpc AssignExanteAccount(ExanteAccountRequest) returns (ExanteAccountResponse) {}
+    rpc GetExanteAccount(ExanteAccountRequest) returns (ExanteAccountResponse) {}
+}
+
+message ExanteAccountRequest {
+    string investor_id = 1;
+}
+
+message ExanteAccountResponse {
+    string exante_account_id = 1;
+}
+
+message GetInvestorPlatformRequest {
+    string id = 1;
+}
+
+message GetInvestorPlatformResponse {
+    string platform = 2;
+}
+message GetInvestorRegistrationStatusRequest {
+    string id = 1;
+}
+
+message GetInvestorRegistrationStatusResponse {
+    string registration_status = 2;
+    string residence = 3;
+}
+
+message UserDetail {
+    string language = 1;
+}
+message SendGmailNotificationRequest {
+    string gmail = 1;
+    string body = 2;
+    string date = 3;
+    string subject = 4;
+}
+
+message SumsubCommentRequest {
+    string button_id = 1;
+    string reject_reason = 2;
+    string reject_type = 3;
+    string comment = 4;
+    string client_comment = 5;
+}
+
+message SumsubCommentResponse {
+}
+message GetSumsubRejectCommentRequest {
+    string button_id = 1;
+}
+
+message GetSumsubRejectCommentResponse {
+    string button_id = 1;
+    string comment = 2;
+}
+message GetKycStatusRequest {
+    string account_id = 1;
+}
+message GetKycStatusResponse {
+    string status = 1;
+    string reason_code = 2;
+    string reject_comment = 3;
+    string registration_step = 4;
+}
+
+message InvestorSearchWithUsernameRequest {
+    string username = 1;
+}
+message InvestorSearchWithUsernameResponse {
+    repeated Investors investors = 1;
+}
+
+message Investors {
+    string investor_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string phone_number = 4;
+    string personal_email = 5;
+    string description = 6;
+    string img = 7;
+    string name = 8;
+}
+
+message UserPassport {
+    string number = 1;
+    string expires_at = 2;
+    string provided_at = 3;
+}
+
+message UserProofOfResidence {
+    string post_code = 1;
+    string provided_at = 2;
+    string expires_at = 3;
+    string address = 4;
+}
+
+message UserKYC {
+    string country_of_residence = 1;
+    string country_of_citizenship = 2;
+    string status = 3;
+    string applicantId = 4;
+    string applicationType = 5;
+    string reject_comment = 6;
+}
+
+message User {
+    string id = 1;
+    string email = 2;
+    string phone = 3;
+    string first_name = 4;
+    string last_name = 5;
+    string middle_name = 6;
+    string gender = 7;
+}
+
+message UpdateUserRequest {
+    // string applicantId = 1;
+    // string inspectionId = 2;
+    // string applicationType = 3;
+    // string correlationId = 4;
+    // string levelName = 5;
+    // bool sandboxMode = 6;
+    // string externalUserId = 7;
+    // string type = 8;
+    // ReviewResult reviewResult = 9;
+    // string reviewStatus = 10;
+    // string createdAt = 11;
+    // string clientId = 12;
+    User user = 1;
+    UserKYC kyc = 2;
+    UserProofOfResidence proof_of_residence = 3;
+    UserPassport passport = 4;
+}
+
+message SendTwilioPhoneNumberRequest {
+    string id = 1;
+    string phone_number = 2;
+    string tag = 3;
+}
+
+message SaveCountryFlagRequest {
+    int32 id = 1;
+    string flag = 2;
+}
+
+message GetCountryPhoneNumberRequest {
+    string search = 1;
+}
+
+message GetCountryPhoneNumberResponse {
+    repeated GetPhoneNumber get_phone_number = 1;
+}
+
+message GetPhoneNumber {
+    string name = 1;
+    string nicename = 2;
+    string iso3 = 3;
+    int64 numcode = 4;
+    int64 phonecode = 5;
+    string flag = 6;
+}
+
+message SendTwilioPhoneNumberResponse {
+    string response = 1;
+}
+
+message CheckVerifivationRequest {
+    string id = 1;
+    string phone_number = 2;
+    string code = 3;
+    string twilio_status = 4;
+}
+
+message CheckVerifivationResponse {
+    string id = 1;
+    string twilio_status = 2;
+    string phone_number = 3;
+}
+
+message SaveInvestorIdentityRequest {
+    string applicantId = 1;
+    string inspevtionId = 2;
+    repeated int64 docId = 3;
+    string documentType = 4;
+}
+
+message UpdateProfileRequest {
+    string applicantId = 1;
+    string description = 2;
+    string username = 3;
+    string full_name = 4;
+    string language = 5;
+}
+
+message GetAllInvestorTokensResponse {
+    repeated InvestorToken tokens = 1;
+}
+message InvestorToken {
+    string investor_id = 1;
+    repeated string tokens = 2;
+}
+
+message GetApplicantInfoByExternalIdResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+	string first_name_en = 4;
+	string last_name = 5;
+	string last_name_en = 6;
+    string issued_date = 7;
+    string valid_until = 8;
+	string number = 9; 
+    string additional_number = 10;
+	string date_of_birth = 11;
+	string place_of_birth_en = 12;
+    PersonalInfo personal_info = 13;
+    Address address = 14;
+    GetInvestorResponse investor_info = 15;
+}
+
+message GetInvestorDocumentsRequest {
+    string investor_id = 1;
+}
+
+message GetInvestorDocumentsResponse {
+    repeated DocumentMetadata documents = 1;
+}
+
+message AccountID {
+    string account_id = 1;
+}
+
+message ApplicantID{
+    string applicant_id = 1;
+    string valid_until = 2;
+    string issuet_date = 3;
+    string number = 4;
+}
+
+
+
+message GetInvestorResponse {
+    string investor_id = 1;
+    string email = 2;
+    string phone = 3;
+    string stage = 4;
+    PersonalInfo personal_info = 5; 
+    Address address = 6;
+    string applicant_id = 7;
+    string financial_account_id = 8;
+    string status = 9;
+    bool trade_enabled = 10;
+    bool deposit_withdraw_enabled = 11;
+    bool manual_kyc_completed = 14;
+    string account_status = 15;
+    bool deleted = 16;
+    bool invisible = 17;
+    int64 id = 18;
+    bool block_to_post = 19;
+}
+
+message CreateInvestorResponse {
+    string investor_id = 1;
+}
+
+message ReviewResult {
+    string reviewAnswer = 1;
+}
+
+message GetKycDataRequest{
+    string investor_id = 1;
+}
+
+message GetKycDataResponse{
+    string applicant_id = 1;
+    string country_residence = 2;
+    string status = 3;
+    string step = 4;
+}
+
+message SaveKycDataRequest {
+    string investor_id = 1;
+    string email = 2;
+    string phone = 3;
+    string fcm_token = 4;
+    PersonalInfo personal_info = 5; 
+    Address address = 6;
+    string applicant_id = 7;
+}
+
+message PersonalInfo {
+    string first_name = 1;
+    string last_name = 2;
+    string middle_name = 3;
+    string gender = 4;
+    string date_of_birth = 5;
+    string place_of_birth = 6;
+    string nationality =7;
+    string description = 8;
+    string minio_name = 9;
+    string username = 10;
+    string full_name = 11;
+    string country_of_birth = 12;
+    string date_of_issue = 13;
+    string date_of_expiry = 14;
+    string issue_by = 15;
+    string passport_number = 16;
+}
+
+message Address {
+    string country_of_citizenship = 1;
+    string country_of_residence = 2;
+    string postcode = 4;
+    string address = 5;
+}
+
+message IsInstrumentFavouriteResponse {
+    bool is_favourite = 1;
+}
+
+message FavouriteInstrument {
+    string id = 1;
+    string investor_id = 2;
+    string instrument_id = 3;
+    string instrument_ticker = 4;
+    string name = 5;
+    string icon = 6;
+}
+
+message FavouriteInstrumentList {
+    repeated FavouriteInstrument instruments = 1;
+}
+
+message AddFavouriteInstrumentRequest {
+    string investor_id = 1;
+    string instrument_id = 2;
+    string instrument_ticker = 3;
+}
+
+message InvestorId {
+    string investor_id = 1;
+}
+
+message InvestorLoginRequest {
+    string email = 1;
+    string message = 2;
+}
+
+message InvestorLoginWebRequest {
+    string email = 1;
+    string message = 2;
+}
+
+message TwoFactorAuthenticateRequest {
+    string id = 1;
+    bool two_fa = 2;
+}
+
+message GetTwoFactorAuthenticateRequest {
+    string id = 1;
+}
+
+message DeactivateAccountRequest {
+    string id = 1;
+}
+
+message CreateAccountRequest {
+    string investor_id = 1;
+    string iban_id = 2;
+}
+
+message InvestorLoginResponse {
+    string id = 1;
+    int32 expires_after = 2;
+    string created_at = 3;
+    bool manual_kyc_completed = 4;
+}
+
+message InvestorLoginWebResponse {
+    string id = 1;
+    int32 expires_after = 2;
+    string created_at = 3;
+}
+
+message TwoFactorAuthenticateResponse {
+    string id = 1;
+    bool two_fa = 2;
+}
+
+message GetTwoFactorAuthenticateResponse {
+    string id = 1;
+    bool two_fa = 2;
+    string phone_number = 3;
+}
+
+message InvestorConfirmEmailRequest {
+    string email = 1;
+    string otp = 2;
+    string id = 3;
+    string fcm_token = 4;
+    string device_id = 5;
+    string platform = 6;
+    string first_name = 7;
+    string last_name = 8;
+}
+
+message InvestorConfirmEmailResponse {
+    string user_id = 1;
+    string kyc_status = 2;
+    bool manual_kyc_completed = 3;
+}
+
+message InvestorConfirmEmailWebRequest {
+    string email = 1;
+    string otp = 2;
+    string id = 3;
+    string first_name = 4;
+    string last_name = 5;
+}
+
+message InvestorConfirmEmailWebResponse {
+    string status = 1;
+}
+
+message InvestorPersonalDataRequest {
+}
+
+message InvestorPersonalDataResponse {
+    string user_id =1;
+}
+
+message GetInvestorRequest {
+    string user_id =1;
+}
+
+message FixOrderParameters {
+	string account_id = 1;
+	string instrument = 2;
+	string symbol_id = 3; 
+	string side = 4; 
+	string quantity = 5; 
+	string order_type = 6; 
+	string stop_price = 7; 
+	string limit_price = 8; 
+	string part_quantity = 9; 
+	string place_interval = 10; 
+	string price_distance = 11;
+	string duration = 12;
+	string gtt_expiration = 13;
+	string client_tag = 14;
+	string take_profit = 15;
+	string stop_loss = 16;
+	string oco_group = 17;
+	string if_done_parent_id = 18;
+	string user_id = 19; 
+}
+
+message FixOrderFills {
+    string time = 1;
+	string timestamp = 2;
+	string quantity = 3;
+	string price = 4;
+	string position = 5;
+}
+
+message FixOrderState {
+	string status = 1;
+	string last_update = 2;
+	repeated FixOrderFills fills = 3;
+	string reason = 4;
+}
+
+message PlaceOrderData {
+    string id = 1;
+	string order_id = 2;
+	string place_time = 3;
+	string current_modification_id = 4;
+	string account_id = 5;
+	string username = 6;
+	string client_tag = 7;
+	string order_type = 8;
+	string stop_price = 9;
+	FixOrderState OrderState = 10;
+    FixOrderParameters OrderParameters = 11;
+    string investor_id = 12;
+}
+
+message InvestorPlaceOrderRequest {
+    repeated PlaceOrderData orders = 1;
+}
+
+message GetInvestStockByIdRequest {
+    string investor_id = 1;
+    string symbol_id = 2;
+}
+
+message GetInvestStockByIdResponse {
+    int32 quantity = 1;
+    string value = 2;
+}
+
+message GetInvestorBuyStocksRequest {
+    string investor_id = 1;
+}
+
+message GetInvestorBuyStocksdata {
+    string id = 1;
+    string name = 2;
+    string icon = 3;
+}
+
+message GetInvestorBuyStocksResponse {
+    repeated GetInvestorBuyStocksdata instruments = 1;
+}
+
+
+message GetInvestorTokensResponse{
+    string id = 1;
+    repeated string fcm_token = 2;
+}
+
+
+message GetInvestorTokensRequest{
+    string user_id = 1;
+}
+
+message GetApplicantInfoRequest {
+    string applicant_id = 1; 
+}
+
+message GetApplicantInfoResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+	string first_name_en = 4;
+	string last_name = 5;
+	string last_name_en = 6;
+    string issued_date = 7;
+    string valid_until = 8;
+	string number = 9; 
+    string additional_number = 10;
+	string date_of_birth = 11;
+	string place_of_birth_en = 12;
+}
+
+
+message UpdateAccountFromSalesforceRequest {
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string full_name = 4;
+    string username = 5;
+    string description = 6;
+    string email = 7;
+    string phone_number = 8;
+    string middle_name = 9;
+    string gender = 10;
+    string date_of_birth = 11;
+    string country_of_residence = 12;
+    string place_of_birth = 13;
+    string post_code = 15;
+    string town = 16;
+    string street = 17;
+    string state = 18;
+    string valid_until = 19;
+    string issuet_date = 20;
+    string citizenship = 21;
+    string date_of_issue = 22;
+    string date_of_expiry = 23;
+    string issue_by = 24;
+    string passport_number = 25;
+    string adress = 26;
+    string investor_status = 27;
+    bool two_fa = 28;
+    bool deleted = 29;
+    string registration_status = 30;
+    string residence = 31;
+}
+
+message UpdateAccountFromSalesforceResponse {
+    string id = 1;
+}

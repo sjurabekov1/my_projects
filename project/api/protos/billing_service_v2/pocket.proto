@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package billing_service_v2;
+option go_package = "genproto/billing_service_v2";
+
+import "google/protobuf/empty.proto";
+
+service PocketService {
+    rpc CreateRequiredPockets(CreatePocketRequest) returns (PocketList) {};
+    rpc CreateCustomPocket(CreatePocketRequest) returns (Pocket) {};
+    rpc UpdatePocket(UpdatePocketRequest) returns (Pocket) {};
+    rpc GetPocket(GetPocketRequest) returns (Pocket) {};
+    rpc GetTransitPocket(GetPocketRequest) returns (Pocket) {};
+    rpc GetAllPocketsOfUser(GetAllPocketsOfUserRequest) returns (PocketList) {};
+    rpc TransferPocketOrders(TransferPocketOrdersRequest) returns (google.protobuf.Empty) {};
+    rpc DeletePocket(DeletePocketRequest) returns (Pocket) {};
+    rpc DeletePocketWithoutTransfer(DeletePocketRequest) returns (Pocket) {};
+    rpc GetPocketSalesforceId(GetPocketSalesforceIdRequest) returns (GetPocketSalesforceIdResponse) {};
+    rpc GetPocketsData(GetPocketsDataRequest) returns (GetPocketsDataResponse) {};
+    rpc GetPocketTypes(GetPocketTypesRequest) returns (GetPocketTypesResponse) {};
+}
+
+message CreatePocketRequest {
+    string user_id    = 1;
+    string type       = 2;
+    string title      = 3;
+    string icon       = 4;
+    string color      = 5;
+    string company_id = 6;
+}
+
+message Pocket {
+    int64 id                         = 1;
+    string name                      = 2;
+    string user_id                   = 3;
+    string currency                  = 4;
+    string company                   = 5;
+    string type                      = 6;
+    string created_at                = 7;
+    PocketBalance balance            = 8;
+    string title                     = 9;
+    string icon                      = 10;
+    string salesforce_id             = 11;
+    string color                     = 12;
+    BalanceDetailed balance_detailed = 13;
+}
+
+message BalanceDetailed {
+    string total_amount             = 1;
+    string currency                 = 2;
+    repeated PocketBalance balances = 3;
+}
+
+message PocketBalance {
+    string currency              = 1;
+    string balance               = 2;
+    string icon                  = 3;
+    string in_requested_currency = 4;
+}
+
+message PocketList {
+    repeated Pocket pockets = 1;
+}
+
+message PocketType {
+    int32 id    = 1;
+    string name = 2;
+}
+
+message UpdatePocketRequest {
+    string name          = 1;
+    string title         = 2;
+    string salesforce_id = 3;
+    string icon          = 4;
+    string color         = 5;
+}
+
+message GetPocketRequest {
+    string pocket_id         = 1;
+    string user_id           = 2;
+    string requsted_currency = 3;
+}
+
+message GetAllPocketsOfUserRequest {
+    string user_id           = 1;
+    string requsted_currency = 3;
+}
+
+message GetAllPocketsOfUserResponse {
+    repeated Pocket pockets = 1;
+}
+
+message GetPocketTypesResponse {
+    repeated PocketType pockets_type = 1;
+}
+
+message GetPocketTypesRequest {
+    int32 limit   = 1;
+    int32 offset  = 2;
+    bool required = 4;
+}
+
+message TransferPocketOrdersRequest {
+    string from_pocket_id      = 1;
+    repeated string symbol_ids = 2;
+    string to_pocket_id        = 3;
+}
+
+message DeletePocketRequest {
+    string pocket_id          = 1;
+    string transfer_pocket_id = 2;
+}
+
+message GetPocketSalesforceIdRequest {
+    string from_pocket_id = 1;
+    string to_pocket_id   = 2;
+}
+
+message GetPocketSalesforceId {
+    string pocket_salesforce_id = 1;
+    string pocket_id            = 2;
+}
+
+message GetPocketSalesforceIdResponse {
+    repeated GetPocketSalesforceId response = 1;
+    string user_id                          = 2;
+}
+
+message GetPocketsDataRequest {
+    string user_id = 1;
+}
+
+message GetPocketsDataBody {
+    string pocket_id     = 1;
+    string salesforce_id = 2;
+    string type          = 3;
+}
+
+message GetPocketsDataResponse {
+    repeated GetPocketsDataBody pockets = 1;
+}

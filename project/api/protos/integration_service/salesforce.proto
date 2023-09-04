@@ -1,0 +1,137 @@
+syntax="proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+message NewsFeed {
+    string title = 1;
+    string body = 2;
+    string created_at = 3;
+    string image_url = 4;
+    float like_count = 5;
+    float comment_count = 6;
+    string publisher = 7;
+}
+
+message BrokerageAccount{
+    string account_name = 1;
+    float balance = 2;
+}
+
+message Notification {
+    int32 id = 1;
+    string title = 2;
+    string content = 3;
+    string image = 4;
+    string created_at = 5;
+    string send_at = 6;
+    string type = 7;
+}
+
+message Account {
+    string country_of_residence = 1;
+    string country_of_citizenship = 2;
+    string post_code = 3;
+    string address = 4;
+    string account_id = 5;
+    string kyc_status = 6;
+    string reject_reason = 7;
+    string kyc_updated_at = 8;
+    string tax_residence = 9;
+    string tax_id = 10;
+    bool passport_submitted = 11;
+    string passport_number = 12;
+    string passport_expiry_date = 13;
+    string passport_provided_date = 14;
+    string passport_photo = 15;
+    bool passport_verified = 16;
+    string passport_verified_timestamp = 17;
+    bool photo_video_submitted = 18;
+    bool photo_video_match_passport = 19;
+    bool is_test_account = 20;
+    
+    string firstname = 21;
+    string lastname = 22;
+    string phone = 23;
+    string selfie_photo = 24;
+    string email = 25;
+    string gender = 26;
+    string username = 27;
+    string description = 28;
+    string preferred_name = 29;
+    string user_image = 30;
+    string identity_front = 31;
+    string identity_back = 32;
+    string inspection_id = 33;
+    string por_document = 34;
+    bool por_submitted = 35;
+    string por_provided_date = 36;
+    bool por_verified = 37;
+    string por_verified_timestamp = 38;
+    string last_login = 39;
+    string first_login = 40;
+    string legal_entity = 41;
+    // string country_of_birth = 7;
+    // string date_of_birth = 14;
+    // string middle_name = 16;
+    // string id = 20;
+    AccountFinance finance = 42;
+    AccountRestrictions restrictions = 43;
+    IdentityApplicaiton identity_application = 44;
+    string activity = 45;
+    string account_number = 46;
+    string passport_issued_by = 47;
+    string learned_from = 48;
+    string region = 49;
+    string accountstatus = 50;
+    bool twofa = 51;
+    bool invisible = 52;
+    string region_id = 53;
+    bool block_to_post = 55;
+    bool deleted = 56;
+    bool manual_verification = 57;
+    string manual_verification_date = 58;
+    string manual_verification_reason = 59;
+    string manual_verification_result = 60;
+    string middle_name = 61;
+    double transit_balance = 62;
+    string exante_account_id = 63;
+    string registration_step = 64;
+}
+
+message AccountFinance {
+    bool deposit_exists = 1;
+    string first_deposit_date = 2;
+    string last_deposit_date = 3;
+    bool trade_exists = 4;
+    string first_trade_date = 5;
+    string last_trade_date = 6;
+    string total_deposits = 7;
+    string total_withdrawals = 8;
+    string aum = 9;
+}
+
+message AccountRestrictions {
+    bool trading_enabled = 1;
+    bool deposit_withdraw_enabled = 2;
+    bool country_restriction = 3;
+    bool is_restricted = 4;
+}
+
+message IdentityApplicaiton {
+    string id = 1;
+    string status = 2;
+}
+
+message Document {
+    string name = 1;
+    string type = 2;
+    string url = 3;
+}
+
+message Tax {
+    string amount = 1;
+    string company_account_id = 2;
+    string operation_id = 3;
+    string tax_type = 4;
+}

@@ -1,0 +1,26 @@
+syntax="proto3";
+
+package zendesk_service;
+option go_package="genproto/zendesk_service";
+import "google/protobuf/empty.proto";
+
+service ZendeskService {
+    rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse) {}
+    rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty) {}
+}
+
+message GenerateTokenRequest {
+    string email = 1;
+    string name = 2;
+    string externale_id = 3;
+}
+
+message GenerateTokenResponse {
+    string token = 1;
+}
+message UpdateUserRequest {
+    string email = 1;
+    string name = 2;
+    string externale_id = 3;
+    int64 id = 4;
+}

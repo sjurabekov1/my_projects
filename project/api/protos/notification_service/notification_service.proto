@@ -1,0 +1,124 @@
+syntax="proto3";
+
+package order_service;
+option go_package="genproto/notification_service";
+import "google/protobuf/empty.proto";
+
+service NotificationService {
+    rpc SendNotification(SendNotificationRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateNotification(Notification) returns (Notification) {}
+    rpc GetNotificationByID(GetByID) returns (Notification) {}
+    rpc GetNotificationsByInvestorID(GetByID) returns (GetNotificationsByInvestorIDResponse) {}
+    rpc CreateNotificationLog(NotificationLog) returns (Notification) {}
+    rpc UpdateNotificationStatus(NotificationStatusServiceRequest) returns (NotificationStatusServiceResponse) {}
+    rpc CreateNotification(Notification) returns (Notification) {}
+    rpc CreateSumsubStatus(CreateSumsubStatusRequest) returns (Empty) {}
+    rpc UpdateSumsubStatus(CreateSumsubStatusRequest) returns (SumsubStatusResponse) {}
+    rpc GetSumsubStatus(GetSumsubStatusRequest) returns (GetSumsubStatusResponse) {}
+    rpc GetNotificationImg(GetNotificationImgRequest) returns (GetNotificationImgResponse) {}
+    rpc GetNotificationStatus(GetNotificationStatusRequest) returns (GetNotificationStatusResponse) {}
+}
+
+message GetNotificationImgRequest {
+    string id = 1;
+}
+message GetNotificationImgResponse {
+    string image_url = 1;
+}
+message GetByID {
+    string id = 1;
+    string type = 2;
+}
+message NotificationResponse {
+    repeated Notification notification = 1;
+}
+
+message Empty {
+}
+
+message CreateSumsubStatusRequest {
+    string investor_id = 1;
+    string status = 2;
+}
+
+message SumsubStatusResponse {
+    string investor_id = 1;
+}
+
+message GetSumsubStatusRequest {
+    string investor_id = 1;
+}
+
+message GetSumsubStatusResponse {
+    string status = 1;
+}
+
+message NotificationStatusServiceRequest {
+   string id = 1;              
+   string scheduled_notification_id = 2; 
+   string recipient_id = 3; 
+   bool status = 4;
+   string created_at = 5;
+   string type = 6;
+   bool is_received = 7;
+}
+
+message NotificationStatusServiceResponse {
+    string id = 1;
+}
+
+message GetNotificationsByInvestorIDResponse {
+    repeated Notification notifications = 1;
+}
+
+message SendNotificationRequest {
+    string id = 1;
+    string title = 2;
+    string message = 3;
+    string image = 4;
+    repeated string receivers = 5;
+    string tag = 6;
+}
+
+message Notification {
+    string id = 1;
+    string title = 2;
+    string message = 3;
+    string image_url = 4;
+    string recipient_id = 5;
+    string created_at = 6;
+    string type = 7;
+    string send_at = 8;
+    bool is_sent = 9;
+    string scheduled_notification_id = 10;
+    string investor_id = 11;
+    string notif_id = 12;
+    bool is_read = 13;
+    string notification_group_id = 14;
+    string status = 15;
+    string language = 16;
+}
+
+message NotificationLog {
+    string id = 1;
+    string title = 2;
+    string message = 3;
+    string image_url = 4;
+    string recipient_id = 5;
+    string created_at = 6;
+    string type = 7;
+}
+
+message GetNotificationStatusRequest {
+    string id = 1;
+}
+
+message GetNotificationStatusResponse {
+    string id = 1;
+    string recipient_id = 2;
+    string title = 3;
+    string message = 4;
+    string image_url = 5;
+    string status = 6;
+    string created_at = 7;
+}

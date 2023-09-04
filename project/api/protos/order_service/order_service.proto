@@ -1,0 +1,87 @@
+syntax="proto3";
+
+package order_service;
+option go_package="genproto/order_service";
+
+import "google/protobuf/empty.proto";
+
+service OrderService {
+    rpc NewOrder(NewOrderRequest) returns (google.protobuf.Empty) {}
+	rpc OrderUpdateStatus(OrderUpdateStatusRequest) returns (google.protobuf.Empty) {}
+	rpc GetOrdersByInvestor(GetOrdersByInvestorRequest) returns (GetOrdersByInvestorResponse) {}
+	rpc GetInvestorPortfolio(GetInvestorPortfolioRequest) returns (GetInvestorPortfolioResponse) {}
+	rpc GetInvestorStockCount(GetInvestorStockCountRequest) returns (GetInvestorStockCountResponse) {}
+	rpc GetPendingOrders(google.protobuf.Empty) returns (GetPendingOrdersResponse) {}
+}
+
+message GetPendingOrdersResponse {
+	repeated PendingOrder orders = 1;
+}
+message PendingOrder{
+	string order_id = 1;
+	string investor_id = 2;
+	string status = 3;
+}
+
+message NewOrderRequest {
+    string user_id = 1;
+	string symbol_id = 2;
+	string exante_order_id = 3;
+	string place_time = 4;
+	string current_modification_id = 5;
+	string exante_account_id = 6;
+	string username = 7;
+	string status = 8;
+	string last_update = 9;
+	string reason = 10;
+	string limit_price = 11;
+	string quantity = 12;
+	string side = 13;
+	string salesforce_order_id = 14;
+}
+
+message OrderUpdateStatusRequest {
+	string order_id = 1;
+	string quantity = 2;
+	string side = 3;
+	string status = 4;
+}
+
+message GetOrdersByInvestorRequest {
+	string investor_id = 1;
+	string side = 2;
+}
+
+message GetOrdersByInvestorData{
+	string guid = 1;
+	string symbol_id = 2;
+	string exante_order_id = 3;
+	string place_time = 4;
+	string status = 5;
+	string reason = 6;
+	string limit_price = 7;
+	string quantity = 8;
+	string side = 9;
+}
+
+message GetOrdersByInvestorResponse {
+	repeated GetOrdersByInvestorData orders = 1;
+}
+
+message GetInvestorPortfolioRequest {
+	string investor_id = 1;
+}
+
+message GetInvestorPortfolioResponse {
+	repeated string symbols = 1;
+}
+
+message GetInvestorStockCountRequest {
+    string investor_id = 1;
+    string symbol_id = 2;
+}
+
+message GetInvestorStockCountResponse {
+    int32 quantity = 1;
+    string value = 2;
+}

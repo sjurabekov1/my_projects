@@ -1,0 +1,726 @@
+syntax="proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+import "fix_service.proto";
+import "integration.proto";
+import "google/protobuf/empty.proto";
+
+
+service IntegrationSevice {
+    // Instrument
+    rpc GetAllExchanges(google.protobuf.Empty) returns (GetExchangesResponse) {}
+    rpc GetAllGroups(GetByIDRequest) returns (GetGroupsResponse) {}
+    rpc GetAllTypes(google.protobuf.Empty) returns (GetTypesResponse) {}
+    rpc GetGroupByID(GetByIDRequest) returns (FixGroupResponse) {}
+    rpc GetExchangeByID(GetByIDRequest) returns (FixExchangesResponse) {}
+    rpc GetExchangesByType(GetExchangesByTypeRequest) returns (GetExchangesResponse) {}
+    rpc GetShortDetailsByStocks(GetShortDetailsByStocksRequest) returns (GetShortDetailsByStocksResponse) {}
+    rpc UpdateIcon(GetInstrumentsByTypeRequest) returns (google.protobuf.Empty) {}
+    rpc FilterInstruments(FilterInstrumentsRequest) returns (FilterInstrumentsResponse) {}
+    rpc GetInstrumentByID(GetInstrumentByIDRequest) returns (FixSymbol) {}
+    rpc GetInstrumentHistory(GetInstrumentHistoryRequest) returns (GetInstrumentHistoryResponse) {}
+    rpc GetAllSymbolId(google.protobuf.Empty) returns(GetSymbolIdsResponse) {}
+    rpc FilteredInstruments(FilterInstrumentsRequest) returns (FilterInstrumentsResponse) {}
+    
+    // Instrument - Musaffo
+    rpc GetMusaffoDetails(GetMusaffoDetailsRequest) returns(GetMusaffoDetailsResponse) {}
+    
+    // Instrument - Refinitiv
+    rpc GetKeyStats(GetKeyStatsRequest) returns(GetKeyStatsResponse) {}
+    rpc GetBussinessSummary(GetBussinessSummaryRequest) returns (GetBussinessSummaryResponse) {}
+    rpc GetKeyStatsNew(GetKeyStatsRequest) returns (GetKeyStatsNewResponse) {}
+    
+    // KYC(Sumsub) 
+    rpc GetApplicantInfoByExternalID(GetApplicantInfoByExternalIdRequest) returns (GetApplicantInfoByExternalIdResponse) {}
+    rpc CreateApplicant(CreateApplicantRequest) returns(CreateApplicantResponse) {}
+    rpc GenerateToken(GenerateTokenRequest) returns(GenerateTokenResponse) {}
+    rpc UploadDocument(UploadDocumentRequest) returns(UploadDocumentResponse) {}
+    rpc GetApplicantDocs(GetApplicantDocsRequest) returns (GetApplicantDocsResponse) {}
+    rpc GetApplicantDocsStatus(GetApplicantDocsStatusRequest) returns (GetApplicantDocsStatusResponse) {}
+    rpc GetApprovedInvestorsDocIds(GetApplicantDocsStatusRequest) returns (GetApplicantDocsStatusResponse) {}
+    rpc UpdateKYCStatus(UpdateKYCStatusRequest) returns (UpdateKYCStatusResponse) {}
+    
+    // News - Refinitiv
+    rpc RetrieveStoriesByIds(RetrieveStoriesByIdsRequests) returns (RetrieveStoriesByIdsResponse) {}
+    rpc GetStockNews(GetStockNewsRequest) returns (GetStockNewsResponse) {}
+
+    // Twilio
+    rpc InvestorLoginByPhone(InvestorLoginByPhoneRequest) returns(InvestorLoginByPhoneResponse) {}
+    rpc InvestorLoginVerifyByPhone(InvestorLoginVerifyRequest) returns(InvestorLoginVerifyResponse) {}
+
+    // Favourite instrument(s)
+    rpc AddFavouriteInstrument(AddFavouriteInstrumentRequest) returns (FavouriteInstrument) {}
+    rpc GetFavouriteInstruments(InvestorId) returns (FavouriteInstrumentList) {}
+    rpc RemoveFromFavourite(FavouriteInstrument) returns (FavouriteInstrument) {}
+    rpc IsInstrumentFavourite(FavouriteInstrument) returns (IsInstrumentFavouriteResponse) {}
+
+    // Webhook instrument
+    rpc UpdateInstrumentMusaffoFromSalesforce(UpdateInstrumentMusaffoFromSalesforceRequest) returns (UpdateInstrumentMusaffoFromSalesforceResponse) {}
+
+    // Last checked
+    rpc GetLastCheckedInstruments(GetLastCheckedInstrumentsRequest) returns (FilterInstrumentsResponse){}
+    
+    rpc UpdateInstrumentRefenitiveFromSalesforce(UpdateInstrumentRefenitiveFromSalesforceRequest) returns (UpdateInstrumentRefenitiveFromSalesforceResponse) {}
+    rpc UpdateRatiosReport(UpdateRatiosReportRequst) returns (UpdateInstrumentRefenitiveFromSalesforceResponse) {}
+    rpc UpsertInstrument(FixSymbol) returns (FixSymbol) {}
+    rpc GetInstrumentRequiredFields(GetInstrumentRequiredFieldsRequest) returns (GetInstrumentRequiredFieldsResponse) {}
+    rpc CreateInvestorAlert(CreateInvestorAlertRequest) returns (CreateInvestorAlertResponse) {}
+    rpc GetInvestorAlerts(GetInvestorAlertsRequest) returns (GetInvestorAlertsReponse) {}
+    rpc GetInvestorOneAlert(GetInvestorOneAlertRequest) returns (GetInvestorOneAlertResponse) {}
+    rpc DeleteInvestorAlert(DeleteInvestorAlertRequest) returns (DeleteInvestorAlertResponse) {}
+    rpc UpdateInvestorAlert(UpdateInvestorAlertRequest) returns (UpdateInvestorAlertResponse) {}
+    rpc GetInstrumentNameById(GetInstrumentNameByIdRequest) returns (GetInstrumentNameByIdResponse) {}
+    rpc GetInvestorInstrumentAlert(GetInvestorInstrumentAlertRequest) returns (GetInvestorInstrumentAlertResponse) {}
+    rpc GetStreetEvents(GetStreetEventsRequest) returns (GetStreetEventsResponse) {}
+    rpc GetInstrumentByISID(GetInstrumentByISIDRequest) returns (FixSymbol) {}
+    rpc InsertSumsubComments(InsertSumsubCommentsRequest) returns (InsertSumsubCommentsResponse) {}
+    rpc CreateUsersFromWeb(CreateUsersFromWebRequest) returns (google.protobuf.Empty) {}
+    rpc CheckEmail(CheckEmailRequest) returns (CheckEmailResponse) {}
+    rpc GetLevelUpEmailTemplate(GetLevelUpEmailTemplateRequest) returns (GetLevelUpEmailTemplateResponse) {}
+    rpc UpdateCompaileQuestions(UpdateCompaileQuestionsRequest) returns (google.protobuf.Empty) {}
+
+    rpc UpdateUserFromWeb(UpdateUserFromWebRequest) returns (google.protobuf.Empty) {}
+    rpc Createcommissionrule(CommissionRule) returns (google.protobuf.Empty) {}
+    rpc Deletecommissionrule(DeletecommissionruleRequest) returns (google.protobuf.Empty) {}
+    rpc GetUserCommissionrule(GetUserCommissionruleRequest) returns (CommissionRule) {}
+    rpc GetInstrumentIndustries(google.protobuf.Empty) returns (GetIndustriesResponse) {}
+}
+message GetIndustry {
+    string industry_name = 1;
+}
+message GetIndustriesResponse {
+    repeated GetIndustry industries = 1;
+}
+message DeletecommissionruleRequest {
+    string investor_id=1;
+}
+
+message CommissionRule {
+    string region = 1;
+    string id = 2;
+    string investor_id=3;
+}
+message GetUserCommissionruleRequest {
+    string investor_id=1;
+}
+
+message UpdateCompaileQuestionsRequest {
+    repeated CompaileQuestions CompaileQuestions = 1;
+}
+message CompaileQuestions {
+    string id = 1;
+    string question = 2;
+    string answer = 3;
+}
+message GetLevelUpEmailTemplateResponse {
+    
+}
+message EmailTemplate {
+    string template = 1;
+    string subject = 2;
+}
+
+message GetLevelUpEmailTemplateRequest {
+    string to = 1;
+    string name = 2;
+    float level = 3;
+}
+message CheckEmailRequest {
+    string email = 1;
+}
+message CheckEmailResponse {
+    string id = 1;
+}
+message CreateUsersFromWebRequest {
+    string id = 1;
+    string email = 2;
+    string name = 3;
+    string number_of_friends = 4;
+    string referal = 5;
+    string date = 6;
+}
+
+message InsertSumsubCommentsRequest {
+    string id = 1;
+}
+
+message InsertSumsubComments {
+    string button_id = 1;
+    string reject_label = 2;
+    string reject_type = 3;
+    string comment = 4;
+    string client_comment = 5;
+}
+
+message InsertSumsubCommentsResponse {
+    repeated InsertSumsubComments comments = 1;
+}
+
+message GetInstrumentByISIDRequest{
+    string isin = 1;
+    string investor_id = 2;
+}
+message GetStreetEventsRequest {
+    string symbol_id = 1;
+    string from = 2;
+    string to = 3;
+    int32 limit = 4;
+    int32 page = 5;
+}
+message GetStreetEventsResponse {
+    repeated StreetEvent street_events = 1;
+}
+message StreetEvent {
+    string country_code = 1;
+    string event_type = 2;
+    string end_date_time = 3;
+    string end_qualifier = 4;
+    bool is_estimate = 5;
+    string start_date_time = 6;
+    string start_qualifier = 7;
+    int32 event_id = 8;
+    string last_update = 9;
+    string name = 10;
+    string organization_name = 11;
+    string organization_symbol_type = 12;
+    string organization_symbol_value = 13;
+    bool rsvp_required = 14;
+    string url = 15;
+}
+
+message GetInvestorInstrumentAlertRequest {
+    string investor_id = 1;
+}
+
+message GetInvestorInstrumentAlertResponse {
+    repeated CreateInvestorAlertRequest investor_alerts = 1;
+    int32 count = 2;
+}
+
+message GetInstrumentNameByIdRequest {
+    string id = 1;
+}
+message GetInstrumentNameByIdResponse {
+    string name = 1;
+}
+message UpdateInvestorAlertRequest {
+    string id = 1;
+    string alert_status = 3;
+    string alert_type = 8;
+}
+message UpdateInvestorAlertResponse {
+    string id = 1;
+    float alert_price = 2;
+    string alert_status = 3;
+    float current_price = 4;
+    string investor_id = 5;
+    float percent = 6;
+    string stock_id = 7;
+    string alert_type = 8;
+    string salesforce_id = 9;
+}
+
+message DeleteInvestorAlertRequest {
+    string id = 1;
+    string investor_id = 2;
+}
+message DeleteInvestorAlertResponse {
+    string id = 1;
+}
+
+message GetInvestorOneAlertRequest {
+    string id = 1;
+}
+message GetInvestorAlertsRequest {
+    string stock_id = 1;
+    string investor_id = 2;
+}
+message GetInvestorAlertsReponse {
+    repeated CreateInvestorAlertRequest investor_alerts = 1;
+}
+message GetInvestorOneAlertResponse {
+    string id = 1;
+    float alert_price = 2;
+    string alert_status = 3;
+    float current_price = 4;
+    string investor_id = 5;
+    float percent = 6;
+    string stock_id = 7;
+    string alert_type = 8;
+    string salesforce_id = 9;
+}
+message CreateInvestorAlertRequest {
+    string id = 1;
+    float alert_price = 2;
+    string alert_status = 3;
+    float current_price = 4;
+    string investor_id = 5;
+    float percent = 6;
+    string stock_id = 7;
+    string alert_type = 8;
+    string salesforce_id = 9;
+    string created_at = 10;
+    string ticker = 11;
+}
+message CreateInvestorAlertResponse {
+    string id = 1;
+}
+
+message GetInstrumentRequiredFieldsRequest {
+    string ric = 1;
+}
+
+message GetInstrumentRequiredFieldsResponse {
+    string business_activity = 1;
+    string cerfiticates_of_desposits = 2;
+    string debt_securities = 3;
+    string treasury_bills = 4;
+    string bonds_e_bonds = 5;
+    string interest_finance_income = 6;
+    string money_market_funds = 7;
+
+    string deposits = 8;
+    string loans_made = 9;
+    string short_term_debt = 10;
+    string long_term_debt = 11;
+    string debt = 12;
+    string total_revenue = 13;
+}
+
+message UpdateKYCStatusRequest {
+    string applicant_id = 1;
+    string status = 2;
+    string phone = 3;
+}
+
+message UpdateKYCStatusResponse {
+    string id = 1;
+}
+
+message UpdateInstrumentRefenitiveFromSalesforceRequest {
+    string ticker = 1;
+    float average_dailty_volume_for_last_10_days = 2;
+    float market_capitalization = 3;
+    float price_change_1_day = 4;
+    float price_change_5_day = 5;
+    float eps = 6;
+    float dividient_per_share =7;
+    float current_ratio =8;
+    float quick_ratio = 9;
+    float lt_debt_equility =10;
+    float roa = 11;
+    float roi = 12;
+    float pe = 13;
+    float total_debt_equity = 14;
+    float total_assets = 15;
+    string asset_category = 16;
+    float beta = 17;
+    float ebit = 18;
+    float roce = 19;
+}
+
+message UpdateRatiosReportBody {
+    string ticker = 1;
+    float average_dailty_volume_for_last_10_days = 2;
+    float market_capitalization = 3;
+    float price_change_1_day = 4;
+    float price_change_5_day = 5;
+    float eps = 6;
+    float dividient_per_share =7;
+    float current_ratio =8;
+    float quick_ratio = 9;
+    float lt_debt_equility =10;
+    float roa = 11;
+    float roi = 12;
+    float pe = 13;
+    float total_debt_equity = 14;
+    float total_assets = 15;
+    string asset_category = 16;
+    float beta = 17;
+    float ebit = 18;
+    float roce = 19;
+    string asset_type = 20;
+    string industry = 21;
+    float price_change_month = 22;
+    float price_change_year = 23;
+}
+
+message UpdateRatiosReportRequst {
+    repeated UpdateRatiosReportBody entity = 1;
+}
+
+message UpdateInstrumentRefenitiveFromSalesforceResponse {
+    string id = 1;
+}
+
+message UpdateInstrumentMusaffoFromSalesforceRequest {
+    string stock_name = 1;
+    string company_name = 2;
+    string shariah_compliance_status = 3;
+    string compliance_ranking = 4;
+    string source = 5;
+    int32 halal = 6;
+    int32 not_halal = 7;
+    string business_activity_status = 8;
+    int32 questionable = 9;
+    string interest_bearing_debt_status = 10;
+    string interest_bearing_securities_assets_status = 11;
+    float interest_ration = 12;
+    float debt_ratio = 13;
+    bool  active  = 14;
+}
+
+message UpdateInstrumentMusaffoFromSalesforceResponse {
+    string id = 1;
+}
+
+
+message InvestorLoginByPhoneRequest {
+    string id = 1;
+    string phone_number = 2;
+    string tag = 3;
+}
+
+message InvestorLoginVerifyRequest {
+    string id = 1;
+    string phone_number = 2;
+    string code = 3;
+}
+
+message InvestorLoginVerifyResponse {
+    string id = 1;
+    string twilio_status = 2;
+    string phone_number = 3;
+}
+
+message InvestorLoginByPhoneResponse {
+    string id = 1;
+    string twilio_status = 2;
+    string phone_number = 3;
+}
+
+message GetMusaffoDetailsRequest {
+    string stock_id = 1;
+}
+
+message GetMusaffoDetailsResponse {
+    MusaffoData musaffo_data = 1;
+}
+
+message GetApplicantDocsStatusRequest {
+    string applicant_id = 1;
+}
+
+message GetApplicantDocsStatusResponse {
+    repeated Identity identities = 1;
+}
+
+message GetApplicantDocsRequest {
+    string inspection_id = 1;
+    string doc_id = 2;
+}
+
+message GetApplicantDocsResponse {
+    string name = 1;
+}
+
+message RetrieveStoriesByIdsRequests {
+    repeated string ids = 1;
+}
+
+message RetrieveStoriesByIdsResponse {
+    repeated NewsStory stories = 1;
+}
+
+message NewsStory {
+    string id = 1;
+    string date = 2;
+    string story = 3;
+}
+
+message GetApplicantInfoByExternalIdResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+    string middle_name = 4;
+	string last_name = 5;
+    string issued_date = 6;
+    string valid_until = 7;
+	string number = 8; 
+    string additional_number = 9;
+	string date_of_birth = 10;
+    string email = 11;
+    string phone = 12;
+    string gender = 13;
+    string place_of_birth = 14;
+    string status = 15;
+    string updated_at = 16;
+    POR por = 17;
+    string reject_reason = 18;
+    string idenity = 19;
+    bool reproccessing = 20;
+    string moderation_comment = 21;
+    int32 attempt_count = 22;
+}
+
+message GetApplicantInfoByExternalIdRequest {
+    string externalId = 1;
+}
+
+message GenerateTokenRequest {
+    string user_id = 1;
+}
+
+message GenerateTokenResponse {
+    string token = 1;
+    string user_id = 2;
+}
+
+message GetApplicantInfoRequest {
+    string applicant_id = 1; 
+}
+
+message GetApplicantInfoResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+	string first_name_en = 4;
+	string last_name = 5;
+	string last_name_en = 6;
+    string issued_date = 7;
+    string valid_until = 8;
+	string number = 9; 
+    string additional_number = 10;
+	string date_of_birth = 11;
+	string place_of_birth_en = 12;
+}
+
+message GetKeyStatsRequest {
+    string ric = 1;
+    string ticker = 2;
+    string country_code = 3;
+}
+
+message GetKeyStatsResponse {
+    KeyStats key_stats = 1;
+}
+
+message GetKeyStatsNewResponse {
+    KeyStatsNew key_stats = 1;
+}
+
+message GetBussinessSummaryRequest {
+    string ticker = 1;
+    string country_code = 2;
+    string lang = 3;
+    string ric = 4;
+}
+
+message GetStockNewsRequest {
+    string language = 1;
+    string ric = 2;
+}
+
+message GetBussinessSummaryResponse {
+    BussinessSummary bussiness_summary = 1;
+}
+
+message GetStockNewsResponse {
+    repeated StockNews stock_news = 1;
+}
+
+message CreateApplicantRequest {
+    string investor_id = 1;
+    string email = 2;
+    string phone = 3;
+    PersonalInfo personal_info = 4; 
+    Address address = 5;
+}
+
+message PersonalInfo {
+    string first_name = 4;
+    string last_name = 5;
+    string middle_name = 6;
+    string gender = 7;
+    string date_of_birth = 8;
+    string place_of_birth = 9;
+    string country_of_birth = 10;
+    string country = 11;
+    string nationality = 12;
+}
+
+message Address {
+    string country = 1;
+    string postcode = 2;
+    string town = 3;
+    string street = 4;
+    string state = 5;
+    string flat_number = 6;
+}
+
+message CreateApplicantResponse {
+    string application_id = 1;
+    string review_status = 2;
+}
+
+message UploadDocumentRequest {
+    UploadDocumentMetadata metadata = 1;
+    string minio_name = 2;
+}
+
+message UploadDocumentMetadata {
+    string investor_id = 1;
+    string document_type = 2;
+    string document_name = 3;
+}
+
+message UploadDocumentResponse {
+    string errors = 1;
+    string warnings = 2;
+}
+
+message GetInstrumentHistoryRequest{
+    string symbol_id = 1;
+    string range_type = 2;
+}
+
+message GetInstrumentByIDRequest{
+    string instrument_id = 1;
+    string investor_id = 2;
+}
+
+message GetInstrumentHistoryResponse {  
+    repeated InstrumentHistory instruents = 1; 
+}
+
+message InstrumentHistory{
+    string symbol_id = 1;
+    int64 timestamp = 2;
+    string open = 3;
+    string close = 4;
+    string high = 5;
+    string low = 6;
+    string volume = 7;
+    string created_at = 8;
+}
+
+message GetByIDRequest {
+    string id = 1;
+}
+
+message FilterInstrumentsResponse {
+    int32 count = 1;
+    repeated FilterInstrument instruments = 2;
+}
+
+message FilterInstrumentsByFindRequest {
+    string search = 1;
+    repeated FilterInstrument instruments = 2;
+}
+
+message FilterInstrument {
+    string id = 1;
+    string ticker = 2;
+    string icon = 3;
+    string name = 4;
+    string ric = 5;
+    string country_code = 6;
+    bool   active = 7;
+    string group = 8;
+    string exchange = 9;
+    int64 expiration = 10;
+    string country = 11;
+    string type = 12;
+    string currency = 13;
+    string mpi = 14;
+    string sedol = 15;
+    string isin = 16;
+    string cusip = 17;
+    string figi = 18;
+    string description = 19;
+    string dat = 20;
+    string asset_category = 21;
+}
+
+message GetExchangesByTypeRequest{
+    string type = 1;
+}
+
+message FilterInstrumentsRequest {
+    string group = 1;
+    string exchange_id = 2;
+    string type = 3;
+    string name = 4;
+    string id = 5;
+    int32 limit = 6;
+    int32 page = 7;
+    repeated string ids = 8;
+    bool isHalal = 9;
+    repeated string symbol_type = 10;
+    bool is_preferred = 11;
+    string price = 12;
+    string de = 13;
+    string current_ratio = 14;
+    string quick_ratio = 15;
+    string total_assets = 16;
+    string change_mid_price = 17;
+    string mid_price = 18;
+    string mid_price_range = 19;
+    string price_and_earnings_range = 20;
+    string de_range = 21;
+    string current_ratio_range = 22;
+    string quick_ratio_range = 23;
+    string total_assets_range = 24;
+    string stock_type = 25;
+    string industry = 26;
+}
+
+
+message GetShortDetailsByStocksRequest {
+    repeated string symbols = 1;
+}
+
+message GetShortDetailsByStocksData{
+    string id = 1;
+    string name = 2;
+    string icon = 3; 
+}
+
+message GetShortDetailsByStocksResponse {
+    repeated GetShortDetailsByStocksData instruments = 1;
+}
+
+message GetSymbolIdsResponse {
+    repeated string ids = 1;
+}
+
+message AddFavouriteInstrumentRequest {
+    string investor_id = 1;
+    string instrument_id = 2;
+    string instrument_ticker = 3;
+}
+
+message InvestorId {
+    string investor_id = 1;
+}
+
+message FavouriteInstrumentList {
+    repeated FavouriteInstrument instruments = 1;
+}
+
+message IsInstrumentFavouriteResponse {
+    bool is_favourite = 1;
+}
+
+message GetLastCheckedInstrumentsRequest{
+    string investor_id = 1;
+    int32 page = 2;
+    int32 limit = 3;
+}
+
+message UpdateUserFromWebRequest {
+    string email = 1;
+    string name = 2;
+}

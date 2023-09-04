@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package billing_service_v2;
+option go_package = "genproto/billing_service_v2";
+
+message CreateCurrencyConvertorRequest {
+    int32 id                 = 1;
+    int32 primary_currency   = 2;
+    int32 secondary_currency = 3;
+    float amount             = 4;
+}
+
+message CreateCurrencyConvertorResponse {
+    int32 id = 1;
+}
+
+message UpdateCurrencyConvertorRequest {
+    int32 id                 = 1;
+    int32 primary_currency   = 2;
+    int32 secondary_currency = 3;
+    float amount             = 4;
+}
+
+message UpdateCurrencyConvertorResponse {
+    int32 id = 1;
+}
+
+message DeleteCurrencyConvertorRequest {
+    int32 id = 1;
+}
+
+message DeleteCurrencyConvertorResponse {
+    int32 id = 1;
+}
+
+message GetCurrencyConvertorResponse {
+    int32 id                 = 1;
+    int32 primary_currency   = 2;
+    int32 secondary_currency = 3;
+    float amount             = 4;
+}
+
+message GetCurrencyConvertorRequest {
+    int32 primary_currency   = 1;
+    int32 secondary_currency = 2;
+}
+
+message GetNameBySalesforceIDRequest {
+    string pocket_id    = 1;
+    string currency_id  = 2;
+    string operation_id = 3;
+}
+
+message ConvertCurrencyRequest {
+    string from_currency = 1;
+    string to_currency   = 2;
+    double amount        = 3;
+}
+
+message GetNameBySalesforceIDResponse {
+    string pocket_name    = 1;
+    string currency_name  = 2;
+    string operation_name = 3;
+    string user_id        = 4;
+}
+
+message ConvertCurrencyResponse {
+    string currency = 1;
+    double amount   = 2;
+}
+
+service CurrencyConverterService {
+    rpc CreateCurrencyConvertor(CreateCurrencyConvertorRequest) returns (CreateCurrencyConvertorResponse) {};
+    rpc GetCurrencyConvertor(GetCurrencyConvertorRequest) returns (GetCurrencyConvertorResponse) {};
+    rpc UpdateCurrencyConvertor(UpdateCurrencyConvertorRequest) returns (UpdateCurrencyConvertorResponse) {};
+    rpc DeleteCurrencyConvertor(DeleteCurrencyConvertorRequest) returns (DeleteCurrencyConvertorResponse) {};
+    rpc GetNameBySalesforceID(GetNameBySalesforceIDRequest) returns (GetNameBySalesforceIDResponse) {};
+    rpc ConvertCurrency(ConvertCurrencyRequest) returns (ConvertCurrencyResponse) {};
+}

@@ -1,0 +1,20 @@
+syntax="proto3";
+
+package user_service;
+option go_package="genproto/user_service";
+
+
+service RegionService {
+    rpc CreateRegion(CreateRegionRequest) returns (CreateRegionResponse) {}
+}
+message CreateRegionRequest {
+    string id = 1;
+    string salesforce_region_id = 2;
+    string name = 3;
+    string code = 4;
+    bool is_restricted = 5;
+}
+
+message CreateRegionResponse {
+    string id = 1;
+}

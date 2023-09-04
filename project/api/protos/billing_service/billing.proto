@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+package billing_service;
+option go_package = "genproto/billing_service";
+
+message Pocket {
+    int64 id                         = 1;
+    string name                      = 2;
+    string user_id                   = 3;
+    string currency                  = 4;
+    string company                   = 5;
+    string type                      = 6;
+    string created_at                = 7;
+    PocketBalance balance            = 8;
+    string title                     = 9;
+    string icon                      = 10;
+    string salesforce_id             = 11;
+    string color                     = 12;
+    BalanceDetailed balance_detailed = 13;
+}
+
+message BalanceDetailed {
+    string total_amount             = 1;
+    string currency                 = 2;
+    repeated PocketBalance balances = 3;
+}
+
+message PocketBalance {
+    string currency              = 1;
+    string balance               = 2;
+    string icon                  = 3;
+    string in_requested_currency = 4;
+}
+
+message PocketList {
+    repeated Pocket pockets = 1;
+}
+
+message PocketType {
+    int32 id    = 1;
+    string name = 2;
+}
+
+message TaxProperty {
+    string id                 = 1;
+    string tax_type           = 2;
+    double value              = 3;
+    string operation_id       = 4;
+    string company_id         = 5;
+    string currency           = 6;
+    string broker_id          = 7;
+    string parent_id          = 8;
+    double min_fee            = 9;
+    bool mark_up              = 10;
+    double discount           = 11;
+    bool partner_mark_up      = 12;
+    string broker_type        = 13;
+    double broker_commission  = 14;
+    double partner_commisison = 15;
+}
+
+message Transaction {
+    int32 id            = 1;
+    string comment      = 2;
+    string user_id      = 3;
+    int64 pocket_id     = 4;
+    string operation_id = 5;
+    string type         = 6;
+    float amount        = 7;
+    string currency     = 8;
+    string status       = 9;
+    string created_at   = 10;
+    string updated_at   = 11;
+    int64 parent_id     = 12;
+}
+
+message Operation {
+    string id   = 1;
+    string name = 2;
+}
+
+message Currency {
+    string id   = 1;
+    string name = 2;
+    string icon = 3;
+}
+
+message Order {
+    string id                       = 1;
+    string investor_id              = 2;
+    string symbol_id                = 3;
+    string place_time               = 4;
+    string current_modification_id  = 5;
+    string exante_account_id        = 6;
+    string username                 = 7;
+    string status                   = 8;
+    string last_update              = 9;
+    string reason                   = 10;
+    string limit_price              = 11;
+    string quantity                 = 12;
+    string side                     = 13;
+    string salesforce_order_id      = 14;
+    string comission_amount         = 15;
+    string pocket_id                = 16;
+    string pocket_title             = 17;
+    string pocket_type              = 18;
+    StockDetails additional_details = 19;
+    string currency                 = 20;
+    string currency_icon            = 21;
+}
+
+message StockDetails {
+    string name   = 1;
+    string icon   = 2;
+    string ticker = 3;
+}
+
+message queryOptions {
+    int64 limit = 1;
+    int64 page  = 2;
+}
+
+message FixOrderResponse {
+    string id                          = 1;
+    string order_id                    = 2;
+    string place_time                  = 3;
+    string current_modification_id     = 4;
+    string account_id                  = 5;
+    string username                    = 6;
+    string client_tag                  = 7;
+    string order_type                  = 8;
+    string stop_price                  = 9;
+    FixOrderState OrderState           = 10;
+    FixOrderParameters OrderParameters = 11;
+    bool status                        = 12;
+    string transit_balance             = 13;
+    string transit_message             = 14;
+    string pocket_salesforce_id        = 15;
+}
+
+message FixOrderFills {
+    string time      = 1;
+    string timestamp = 2;
+    string quantity  = 3;
+    string price     = 4;
+    int32 position   = 5;
+}
+
+message FixOrderState {
+    string status                = 1;
+    string last_update           = 2;
+    repeated FixOrderFills fills = 3;
+    string reason                = 4;
+}
+
+message FixOrderParameters {
+    string account_id        = 1;
+    string instrument        = 2;
+    string symbol_id         = 3;
+    string side              = 4;
+    string quantity          = 5;
+    string order_type        = 6;
+    string stop_price        = 7;
+    string limit_price       = 8;
+    string part_quantity     = 9;
+    string place_interval    = 10;
+    string price_distance    = 11;
+    string duration          = 12;
+    string gtt_expiration    = 13;
+    string client_tag        = 14;
+    string take_profit       = 15;
+    string stop_loss         = 16;
+    string oco_group         = 17;
+    string if_done_parent_id = 18;
+    string user_id           = 19;
+}

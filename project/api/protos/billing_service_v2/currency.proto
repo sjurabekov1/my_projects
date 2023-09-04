@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package billing_service_v2;
+option go_package = "genproto/billing_service_v2";
+
+message CreateCurrencyRequest {
+    string name = 1;
+    int32 id    = 2;
+    string icon = 3;
+    bool active = 4;
+}
+
+message CreateCurrencyResponse {
+    string name = 1;
+}
+
+message UpdateCurrencyRequest {
+    string id   = 1;
+    string name = 2;
+}
+
+message UpdateCurrencyResponse {
+    string id = 1;
+}
+
+message DeleteCurrencyRequest {
+    int32 id = 1;
+}
+
+message DeleteCurrencyResponse {
+    int32 id = 1;
+}
+
+message GetCurrencyListRequest {
+    string user_id            = 1;
+    string requested_currency = 2;
+}
+
+message GetCurrencyListResponse {
+    repeated CurrencyReport currencies = 1;
+    double total_amount                = 2;
+}
+
+message CurrencyReport {
+    string currency   = 1;
+    string icon       = 2;
+    double percentage = 3;
+    double amount     = 4;
+}
+
+message GetCurrenciesRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+}
+
+message GetCurrenciesResponse {
+    repeated Currency currencies = 1;
+}
+
+message Currency {
+    int32 id   = 1;
+    string name = 2;
+    string icon = 3;
+}
+
+message GetTransitCurrenciesRequest {
+    string user_id  = 1;
+    string currency = 2;
+}
+
+message TransitAmounts {
+    string currency = 1;
+    double amount   = 2;
+}
+
+message GetTransitCurrenciesResponse {
+    double total_amount              = 1;
+    repeated TransitAmounts balances = 2;
+}
+
+service CurrencyService {
+    rpc CreateCurrency(CreateCurrencyRequest) returns (CreateCurrencyResponse) {};
+    rpc DeleteCurrency(DeleteCurrencyRequest) returns (DeleteCurrencyResponse) {};
+    rpc GetCurrencies(GetCurrenciesRequest) returns (GetCurrenciesResponse) {};
+    rpc GetCurrencyList(GetCurrencyListRequest) returns (GetCurrencyListResponse) {};
+    rpc GetTransitCurrencies(GetTransitCurrenciesRequest) returns (GetTransitCurrenciesResponse) {};
+}

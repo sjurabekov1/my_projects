@@ -1,0 +1,773 @@
+syntax = "proto3";
+
+package billing_service;
+option go_package = "genproto/billing_service";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "billing.proto";
+
+service BillingService {
+    rpc ExecOperation(ExecOperationRequest) returns (ExecOperationResponse) {};
+    rpc UpsertTaxPropery(TaxProperty) returns (TaxProperty) {};
+    rpc GetFirstTransactions(GetFirstTransactionsRequest) returns (GetFirstTransactionsResponse) {};
+    rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse) {};
+    rpc GetOperations(google.protobuf.Empty) returns (GetOperationsResponse) {};
+    rpc CalculateTax(CalculateTaxRequest) returns (CalculateTaxResponse) {};
+    rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse) {};
+    rpc CreateOrder(CreateOrderRequest) returns (Order) {};
+    rpc GetPurchasedStocks(GetPurchasedStockRequest) returns (GetPurchasedStocksResponse) {};
+    rpc GetInstrumentPurchaseStatus(GetInstrumentPurchaseStatusRequest) returns (GetInstrumentPurchaseStatusResponse) {};
+
+    // Fix Order
+    rpc FixPlaceOrder(FixPlaceOrderRequest) returns (FixOrderResponse) {};
+    rpc FixCancelOrder(FixCancelOrderRequest) returns (google.protobuf.Empty) {};
+    rpc GetPocketName(GetPocketNameRequest) returns (GetPocketNameResponse) {};
+    rpc UpsertComissionGroup(UpsertComissionGroupRequest) returns (google.protobuf.Empty) {};
+    rpc UpsertComissionGroupRelation(UpsertComissionGroupRelationRequest) returns (google.protobuf.Empty) {};
+
+    // Analytics
+    rpc UpdateTransactionStatus(UpdateTransactionStatusRequest) returns (UpdateTransactionStatusReponse) {};
+    rpc SetSalesforceId(SetSalesforceIdRequest) returns (google.protobuf.Empty) {};
+
+    rpc Test(TestMsg) returns (Quote) {};
+    rpc GetTransactionsV2(GetTransactionsV2Request) returns (GetTransactionsV2Response) {}
+    rpc GetInvoices(GetInvoicesRequest) returns (GetInvoicesResponse) {};
+    rpc GetLastQuote(GetLastQuoteRequest) returns (GetLastQuoteResponse) {};
+    rpc GetLastQuoteMap(GetLastQuoteRequest) returns (GetLastQuoteMapResponse) {};
+    rpc GetAveragePriceOfSymbols(GetAveragePriceOfSymbolsRequest) returns (GetAveragePriceOfSymbolsResponse) {};
+    rpc GetTransactionsById(GetTransactionByIdRequest) returns (GetTransactionByIdResponse) {};
+    rpc GetCountOfInstrumentsInTransit(GetCountOfInstrumentsInTransitRequest) returns (GetCountOfInstrumentsInTransitResponse) {};
+    rpc GetMainGraphData(GetMainGraphDataRequest) returns (GetMainGraphDataResponse) {};
+    rpc GetMainGraph(GetMainGraphRequest) returns (GetInstrumentHistoryResponse) {};
+    rpc TestGetLastQuote(TestGetLastQuoteRequest) returns (TestGetLastQuoteResponse) {};
+    rpc GetWithdrawalAmount(GetWithdrawalAmountRequest) returns (GetWithdrawalAmountResponse) {};
+    rpc UpdateUserStock(UpdateUserStockRequest) returns (google.protobuf.Empty) {};
+    rpc CalculateGrowthPercentage(CalculateGrowthPercentageRequest) returns (CalculateGrowthPercentageResponse) {};
+    rpc CalculateGrowthPercentageBySymbol(CalculateGrowthPercentageRequest) returns (CalculateGrowthPercentageResponseBySymbol) {};
+    rpc CalculatePercentageBySymbol(CalculateGrowthPercentageRequest) returns (CalculatePercentageResponseBySymbol) {};
+    rpc UpsertBroker(UpsertBrokerRequest) returns (UpsertBrokerRequest) {};
+    rpc UpsertPartner(UpsertPartnerRequest) returns (UpsertPartnerRequest) {};
+    rpc InvestorBillingData(InvestorBillingDataRequest) returns (InvestorBillingDataResponse) {};
+    rpc CreateMainGraph(CreateMainGraphRequest) returns (google.protobuf.Empty) {};
+}
+
+message CreateMainGrapData {
+    string investor_id = 1;
+    string taum        = 2;
+    string name        = 3;
+    string symbol_id   = 4;
+}
+message CreateMainGraphRequest {
+    repeated CreateMainGrapData data = 1;
+}
+
+message InvestorBillingDataRequest {
+    string investor_id        = 1;
+    string requested_currency = 2;
+}
+
+message InvestorBillingDataResponse {
+    repeated InvestorPockets pockets = 1;
+}
+
+message InvestorPockets {
+    string pocket_id                         = 1;
+    repeated InvestorInstruments instruments = 2;
+}
+
+message InvestorInstruments {
+    double avg_price      = 1;
+    string symbol_id      = 2;
+    int32 purchased_count = 3;
+    int32 sellable_count  = 4;
+}
+
+message UpsertPartnerRequest {
+    string id           = 1;
+    string name         = 2;
+    double amount       = 3;
+    string partner_type = 4;
+    string user_type    = 5;
+}
+
+message UpsertBrokerRequest {
+    string id             = 1;
+    string name           = 2;
+    string legal_addrress = 3;
+    double amount         = 4;
+    string broker_type    = 5;
+}
+
+message GetPocketsDataRequest {
+    string user_id = 1;
+}
+
+message GetPocketsDataBody {
+    string pocket_id     = 1;
+    string salesforce_id = 2;
+    string type          = 3;
+}
+
+message GetPocketsDataResponse {
+    repeated GetPocketsDataBody pockets = 1;
+}
+
+message CalculateGrowthPercentageRequest {
+    string user_id   = 1;
+    string pocket_id = 2;
+}
+message CalculateGrowthPercentageResponse {
+    double growth_percentage = 1;
+    double difference_amount = 2;
+    int64 count              = 3;
+}
+message CalculatePercentageResponse {
+    double growth_percentage = 1;
+    double difference_amount = 2;
+    string id                = 3;
+    string name              = 4;
+    string ticker            = 5;
+    string icon              = 6;
+}
+
+message CalculatePercentageResponseBySymbol {
+    map<string, CalculatePercentageResponse> symbols = 1;
+}
+message CalculateGrowthPercentageResponseBySymbol {
+    map<string, CalculateGrowthPercentageResponse> symbols = 1;
+}
+
+message UpdateUserStockRequest {
+    string order_id = 1;
+}
+
+message TestGetLastQuoteRequest {
+    repeated string symbol_ids = 1;
+}
+
+message TestGetLastQuoteResponse {
+    repeated Quote quotes = 1;
+}
+
+message GetPocketSalesforceIdRequest {
+    string from_pocket_id = 1;
+    string to_pocket_id   = 2;
+}
+
+message GetPocketSalesforceId {
+    string pocket_salesforce_id = 1;
+    string pocket_id            = 2;
+}
+message GetPocketSalesforceIdResponse {
+    repeated GetPocketSalesforceId response = 1;
+    string user_id                          = 2;
+}
+message GetWithdrawalAmountRequest {
+    string user_id            = 1;
+    string requested_currency = 2;
+}
+
+message GetWithdrawalAmountResponse {
+    double withdrawal_amount = 1;
+}
+
+message GetMainGraphDataRequest {
+    string investor_id = 1;
+    string period      = 2;
+    string pocket_id   = 3;
+}
+
+message GetMainGraphRequest {
+    string investor_id = 1;
+    string period      = 2;
+}
+message GetMainGraphData {
+    double taum       = 1;
+    string created_at = 2;
+    int64 unix_time   = 3;
+    string inter      = 4;
+}
+
+message GetMainGraphDataResponse {
+    repeated GetMainGraphData data = 1;
+}
+message GetMainGraph {
+    string range                                   = 1;
+    map<string, GetInstrumentHistoryResponse> data = 2;
+}
+message GetMainGraphResponse {
+    repeated GetMainGraph list = 1;
+}
+
+message GetInstrumentHistoryResponse {
+    repeated InstrumentHistory instruments = 1;
+}
+
+message InstrumentHistory {
+    string symbol_id  = 1;
+    int64 timestamp   = 2;
+    string open       = 3;
+    string close      = 4;
+    string high       = 5;
+    string low        = 6;
+    string volume     = 7;
+    string created_at = 8;
+}
+message Quote {
+    string symbol_id = 1;
+    string price     = 2;
+    string size      = 3;
+}
+
+message GetCountOfInstrumentsInTransitRequest {
+    string symbol_id   = 1;
+    string investor_id = 2;
+}
+
+message GetTransitCurrenciesRequest {
+    string user_id  = 1;
+    string currency = 2;
+}
+
+message TransitAmounts {
+    string currency = 1;
+    double amount   = 2;
+}
+
+message GetTransitCurrenciesResponse {
+    double total_amount              = 1;
+    repeated TransitAmounts balances = 2;
+}
+message GetCountOfInstrumentsInTransitResponse {
+    int32 count = 1;
+}
+
+message GetTransactionById {
+    int64 id               = 1;
+    int64 parent_id        = 2;
+    string comment         = 3;
+    string user_id         = 4;
+    string operation_id    = 5;
+    int64 amount           = 6;
+    string currency        = 7;
+    string status          = 8;
+    string created_at      = 9;
+    string updated_at      = 10;
+    string order_id        = 11;
+    string bank_account    = 12;
+    string salesforce_id   = 13;
+    int64 future_pocket_id = 14;
+    string text_amount     = 15;
+    int64 pocket_id        = 16;
+}
+
+message GetTransactionByIdRequest {
+    string pocket_id = 1;
+}
+message GetTransactionByIdResponse {
+    repeated GetTransactionById transactions = 1;
+}
+message GetAveragePriceOfSymbolsRequest {
+    string user_id   = 1;
+    string pocket_id = 2;
+}
+
+message AverageSymbolPrice {
+    int32 symbol_count   = 1;
+    double average_price = 2;
+}
+
+message GetAveragePriceOfSymbolsResponse {
+    map<string, AverageSymbolPrice> average_price = 1;
+}
+
+message GetLastQuoteRequest {
+    repeated string symbols_id = 1;
+}
+
+message GetLastQuoteResponse {
+    repeated FixTicksResponse ticks = 1;
+}
+message FixAskTicks {
+    string value = 1;
+    string size  = 2;
+}
+
+message FixBidTicks {
+    string value = 1;
+    string size  = 2;
+}
+
+message FixTicksResponse {
+    uint64 timestamp         = 1;
+    string symbolId          = 2;
+    repeated FixBidTicks bid = 3;
+    repeated FixAskTicks ask = 4;
+    string value             = 5;
+    string size              = 6;
+}
+message GetLastQuoteMapResponse {
+    map<string, FixTicksResponse> last_quote = 1;
+}
+
+message TestMsg {
+    string id      = 1;
+    string symbol  = 2;
+    bool subscribe = 3;
+}
+
+message GetInvoicesRequest {
+    string investor_id = 1;
+    int32 limit        = 2;
+    int32 page         = 3;
+}
+message GetInvoicesResponse {
+    repeated Invoices invoices = 1;
+    int32 count                = 2;
+}
+message Invoices {
+    int64 id              = 1;
+    string user_id        = 2;
+    string pocket_name    = 3;
+    string operation_id   = 4;
+    string amount         = 5;
+    string currency       = 6;
+    string status         = 7;
+    string created_at     = 8;
+    string bank_account   = 9;
+    string operation_name = 10;
+}
+
+message GetTransactionsV2Request {
+    string user_id = 1;
+    int32 limit    = 2;
+    int32 page     = 3;
+    string status  = 4;
+}
+
+message TransactionV2 {
+    string pocket            = 1;
+    string created_at        = 2;
+    string amount            = 3;
+    string commission_amount = 4;
+    string order_id          = 5;
+    string operation         = 6;
+    string type              = 7;
+    string symbol_id         = 8;
+    int32 quantity           = 9;
+    string pocket_type       = 10;
+    string status            = 11;
+    string bank_account      = 12;
+    string side              = 13;
+    string currency          = 14;
+    string currency_icon     = 15;
+    string description       = 16;
+    string pocket_title      = 17;
+}
+
+message GetTransactionsV2Response {
+    int32 count                         = 1;
+    repeated TransactionV2 transactions = 2;
+}
+
+message SetSalesforceIdRequest {
+    string operation_id  = 1;
+    string salesforce_id = 2;
+}
+message UpdateTransactionStatusReponse {
+    string user_id = 1;
+}
+
+message UpdateTransactionStatusRequest {
+    string salesforce_id = 1;
+    string status        = 2;
+    int64 id             = 3;
+}
+
+message GetCurrentAssetValueRequest {
+    string user_id            = 1;
+    string period             = 2;
+    string requested_currency = 3;
+    string pocket_id          = 4;
+}
+
+message GetCurrentAssetValueResponse {
+    string user_id             = 1;
+    string current_asset_value = 2;
+    string cash_value          = 3;
+}
+
+message GetAssetListRequest {
+    string user_id    = 1;
+    string range_type = 2;
+    string currency   = 3;
+    string pocket_id  = 4;
+}
+
+message GetAssetListResponse {
+    repeated Asset assets = 1;
+    string currency       = 2;
+    int32 total_count     = 3;
+}
+
+message Asset {
+    string symbol_id                       = 1;
+    double average_price                   = 2;
+    int32 quantity                         = 3;
+    google.protobuf.Timestamp purchased_at = 4;
+}
+
+message GetPocketAnalyticsRequest {
+    string type               = 1;
+    string user_id            = 2;
+    repeated string pocket_id = 3;
+}
+
+message GetPocketAnalyticsResponse {
+    string value    = 1;
+    string currency = 2;
+    string type     = 3;
+}
+
+message UpsertComissionGroupRequest {
+    string id   = 1;
+    string name = 2;
+}
+
+message UpsertComissionGroupRelationRequest {
+    string id       = 1;
+    string group_id = 2;
+    string tax_id   = 3;
+}
+
+message GetPocketNameRequest {
+    string PocketId = 1;
+}
+message GetPocketNameResponse {
+    string PocketName = 2;
+}
+
+message FixCancelOrderRequest {
+    string order_id = 1;
+}
+
+message FixPlaceOrderRequest {
+    string symbol_id     = 1;
+    string side          = 2;
+    string limit_price   = 3;
+    string quantity      = 4;
+    string investor_id   = 5;
+    string currency      = 6;
+    string pocket_id     = 7;
+    string salesforce_id = 8;
+}
+
+message TransferPocketOrdersRequest {
+    string from_pocket_id      = 1;
+    repeated string symbol_ids = 2;
+    string to_pocket_id        = 3;
+}
+
+message DeletePocketRequest {
+    string pocket_id          = 1;
+    string transfer_pocket_id = 2;
+}
+
+message GetInstrumentPurchaseStatusResponse {
+    repeated PurchaseStatus statuses = 1;
+}
+
+message ConvertCurrencyRequest {
+    string from_currency = 1;
+    string to_currency   = 2;
+    string amount        = 3;
+}
+
+message ConvertCurrencyResponse {
+    string currency = 1;
+    string amount   = 2;
+}
+
+message GetNameBySalesforceIDRequest {
+    string pocket_id    = 1;
+    string currency_id  = 2;
+    string operation_id = 3;
+}
+
+message GetNameBySalesforceIDResponse {
+    string pocket_name    = 1;
+    string currency_name  = 2;
+    string operation_name = 3;
+    string user_id        = 4;
+}
+
+message ExecOperationResponse {
+    Pocket pocket             = 1;
+    OperationInfo info        = 2;
+    repeated TaxInfo tax_list = 3;
+    int64 transaction_id      = 4;
+    string transit_balance    = 5;
+    string transit_message    = 6;
+    string broker             = 7;
+    string partner            = 8;
+}
+
+message OperationInfo {
+    string investor_id  = 1;
+    string pocket_id    = 2;
+    string amount       = 3;
+    string currency     = 4;
+    string operation_id = 5;
+}
+
+message TaxInfo {
+    string user_id                = 1;
+    string user_pocket_id         = 2;
+    string counterparty_id        = 3;
+    string counterparty_pocket_id = 4;
+    string amount                 = 5;
+    string currency               = 6;
+    string operation_id           = 7;
+    string operating_hour_id      = 8;
+}
+
+message GetInstrumentPurchaseStatusRequest {
+    string symbol_id   = 1;
+    string investor_id = 2;
+}
+
+message PurchaseStatus {
+    string pocket_id = 1;
+    int32 sell_count = 3;
+    int32 count      = 2;
+}
+
+message GetPurchasedStockRequest {
+    string user_id       = 1;
+    string pocket_id     = 2;
+    queryOptions options = 3;
+}
+
+message GetPurchasedStocksResponse {
+    int32 count                    = 1;
+    repeated PurchasedStock stocks = 2;
+}
+
+message PurchasedStock {
+    string id                      = 1;
+    string name                    = 2;
+    string ticker                  = 3;
+    string icon                    = 4;
+    int32 sellable_count           = 5;
+    int32 count                    = 6;
+    double price_change_percentage = 8;
+    double average_price           = 9;
+}
+
+message PocketDetailed {
+    string total_amount             = 1;
+    string currency                 = 2;
+    string icon                     = 3;
+    repeated PocketBalance balances = 4;
+}
+
+message GetCurrenciesResponse {
+    repeated Currency currencies = 1;
+}
+
+message UpdatePocketRequest {
+    string name          = 1;
+    string title         = 2;
+    string salesforce_id = 3;
+    string icon          = 4;
+    string color         = 5;
+}
+
+message CalculateTaxResponse {
+    string tax_percentage     = 1;
+    string tax_fixed          = 2;
+    string tax_calculated     = 3;
+    string tax_amount         = 4;
+    string hyssa_commission   = 5;
+    string broker_commission  = 6;
+    string partner_commission = 7;
+    string min_fee            = 8;
+    bool markup               = 9;
+    string discount           = 10;
+}
+
+message CalculateTaxRequest {
+    string amount             = 1;
+    string operation_name     = 2;
+    string comission_group_id = 3;
+    string currency           = 4;
+    int32 count               = 5;
+}
+
+message GetOperationsResponse {
+    repeated Operation operations = 1;
+}
+
+message ExecOperationRequest {
+    string pocketId           = 1;
+    string amount             = 2;
+    string operation_name     = 3;
+    string order_id           = 4;
+    string currency           = 5;
+    string comission_group_id = 6;
+    string bank_account_id    = 7;
+    string salesforce_id      = 8;
+    bool from_salesforce      = 9;
+    int32 quantity            = 10;
+}
+
+message InitializeUserPocketsResponse {
+    repeated Pocket pockets = 1;
+}
+
+message GetPocketRequest {
+    string pocket_id         = 1;
+    string user_id           = 2;
+    string requsted_currency = 3;
+}
+
+message GetAllPocketsOfUserRequest {
+    string user_id           = 1;
+    string requsted_currency = 3;
+}
+
+message GetAllPocketsOfUserResponse {
+    repeated Pocket pockets = 1;
+}
+
+message GetPocketTypesResponse {
+    repeated PocketType pockets_type = 1;
+}
+
+
+message GetFirstTransactionsRequest {
+    int32 limit      = 1;
+    int32 offset     = 2;
+    string pocket_id = 3;
+    string user_id   = 4;
+    string type      = 5;
+}
+
+message GetFirstTransactions {
+    int32 id                       = 1;
+    string comment                 = 2;
+    string user_id                 = 3;
+    int64 pocket_id                = 4;
+    string operation_id            = 5;
+    string type                    = 6;
+    string amount                  = 7;
+    string amount_before_comission = 8;
+    string comission_amount        = 9;
+    string currency                = 10;
+    string status                  = 11;
+    string created_at              = 12;
+    string updated_at              = 13;
+    string currency_icon           = 14;
+    string iban_code               = 15;
+    string quantity                = 16;
+    string consumption             = 17;
+}
+
+message GetFirstTransactionsResponse {
+    int32 count                                        = 1;
+    repeated GetFirstTransactions getFirstTransactions = 2;
+}
+
+message GetTransactionRequest {
+    int64 id = 1;
+}
+
+message GetTransactionResponse {
+    int32 id                       = 1;
+    string comment                 = 2;
+    string user_id                 = 3;
+    int64 pocket_id                = 4;
+    string operation_id            = 5;
+    string type                    = 6;
+    string amount                  = 7;
+    string amount_before_comission = 8;
+    string comission_amount        = 9;
+    string currency                = 10;
+    string status                  = 11;
+    string created_at              = 12;
+    string updated_at              = 13;
+    string currency_icon           = 14;
+    string salesforce_id           = 15;
+}
+
+message CreateOrderRequest {
+    string id                      = 16;
+    string investor_id             = 1;
+    string symbol_id               = 2;
+    string place_time              = 4;
+    string current_modification_id = 5;
+    string exante_account_id       = 6;
+    string username                = 7;
+    string status                  = 8;
+    string last_update             = 9;
+    string reason                  = 10;
+    string limit_price             = 11;
+    string quantity                = 12;
+    string side                    = 13;
+    string pocket_id               = 14;
+    string currency                = 15;
+}
+
+message GetOrdersRequest {
+    queryOptions options = 1;
+    string investor_id   = 2;
+    string pocket_id     = 3;
+}
+
+message GetOrdersResponse {
+    int32 count           = 1;
+    repeated Order orders = 2;
+}
+
+message CreateCurrencyConvertorRequest {
+    string id                 = 1;
+    string primary_currency   = 2;
+    string secondary_currency = 3;
+    float amount              = 4;
+}
+
+message CreateCurrencyConvertorResponse {
+    string id = 1;
+}
+
+message UpdateCurrencyConvertorRequest {
+    string id                 = 1;
+    string primary_currency   = 2;
+    string secondary_currency = 3;
+    float amount              = 4;
+}
+
+message UpdateCurrencyConvertorResponse {
+    string id = 1;
+}
+
+message DeleteCurrencyConvertorRequest {
+    string id = 1;
+}
+
+message DeleteCurrencyConvertorResponse {
+    string id = 1;
+}
+
+message GetCurrencyConvertorResponse {
+    string id                 = 1;
+    string primary_currency   = 2;
+    string secondary_currency = 3;
+    float amount              = 4;
+}
+
+message GetCurrencyConvertorRequest {
+    string primary_currency   = 1;
+    string secondary_currency = 2;
+}

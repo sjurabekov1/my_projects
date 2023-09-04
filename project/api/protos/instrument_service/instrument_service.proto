@@ -1,0 +1,308 @@
+syntax="proto3";
+
+package instrument_service;
+option go_package="genproto/instrument_service";
+
+import "instrument.proto";
+import "google/protobuf/empty.proto";
+
+
+service InstrumentSevice {
+    rpc GetAllExchanges(google.protobuf.Empty) returns (GetExchangesResponse) {}
+    rpc GetAllGroups(GetByIDRequest) returns (GetGroupsResponse) {}
+    rpc GetAllTypes(google.protobuf.Empty) returns (GetTypesResponse) {}
+    rpc FilterInstruments(FilterInstrumentsRequest) returns (FilterInstrumentsResponse) {}
+    rpc GetInstrumentByID(GetInstrumentByIDRequest) returns (FixSymbol) {}
+    rpc GetBussinessSummary(GetBussinessSummaryRequest) returns (GetBussinessSummaryResponse) {}
+    rpc GetGroupByID(GetByIDRequest) returns (FixGroupResponse) {}
+    rpc GetExchangeByID(GetByIDRequest) returns (FixExchangesResponse) {}
+    rpc GetExchangesByType(GetExchangesByTypeRequest) returns (GetExchangesResponse) {}
+    rpc GetShortDetailsByStocks(GetShortDetailsByStocksRequest) returns (GetShortDetailsByStocksResponse) {}
+    rpc UpdateIcon(GetInstrumentsByTypeRequest) returns (google.protobuf.Empty) {}
+    rpc GetInstrumentHistory(GetInstrumentHistoryRequest) returns (GetInstrumentHistoryResponse) {}
+    rpc UploadDocument(UploadDocumentRequest) returns(UploadDocumentResponse) {}
+ 
+    rpc GetApplicantInfoByExternalID(GetApplicantInfoByExternalIdRequest) returns (GetApplicantInfoByExternalIdResponse) {}
+
+    rpc GetApplicantInfo(GetApplicantInfoRequest) returns (GetApplicantInfoResponse) {}
+    rpc CreateApplicant(CreateApplicantRequest) returns(CreateApplicantResponse) {}
+    rpc GetStockNews(GetStockNewsRequest) returns (GetStockNewsResponse) {}
+    rpc RetrieveStoriesByIds(RetrieveStoriesByIdsRequests) returns (RetrieveStoriesByIdsResponse) {}
+    // KYC(Sumsub) 
+    rpc GetKeyStats(GetKeyStatsRequest) returns(GetKeyStatsResponse) {}
+    rpc GenerateToken(GenerateTokenRequest) returns(GenerateTokenResponse) {}
+
+    rpc GetAllSymbolId(google.protobuf.Empty) returns(GetSymbolIdsResponse) {}
+
+    // Favourite instrument(s)
+    rpc AddFavouriteInstrument(AddFavouriteInstrumentRequest) returns (FavouriteInstrument) {}
+    rpc GetFavouriteInstruments(InvestorId) returns (FavouriteInstrumentList) {}
+    rpc RemoveFromFavourite(FavouriteInstrument) returns (FavouriteInstrument) {}
+    rpc IsInstrumentFavourite(FavouriteInstrument) returns (IsInstrumentFavouriteResponse) {}
+}
+
+message AddFavouriteInstrumentRequest {
+    string investor_id = 1;
+    string instrument_id = 2;
+    string instrument_ticker = 3;
+}
+
+message InvestorId {
+    string investor_id = 1;
+}
+
+message FavouriteInstrumentList {
+    repeated FavouriteInstrument instruments = 1;
+}
+
+message IsInstrumentFavouriteResponse {
+    bool is_favourite = 1;
+}
+
+message GetInstrumentsByTypeRequest {
+    string symbol_type = 1;
+}
+
+message GetTypesResponse {
+    repeated FixType fix_types = 1;
+}
+
+message GetGroupsResponse {
+    repeated FixGroupResponse groups = 1;
+}
+
+message GetExchangesResponse {
+    repeated FixExchangesResponse exchanges = 1;
+}
+
+message RetrieveStoriesByIdsRequests {
+    repeated string ids = 1;
+}
+
+message RetrieveStoriesByIdsResponse {
+    repeated NewsStory stories = 1;
+}
+
+message NewsStory {
+    string id = 1;
+    string date = 2;
+    string story = 3;
+}
+
+message GetApplicantInfoByExternalIdResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+	string first_name_en = 4;
+	string last_name = 5;
+	string last_name_en = 6;
+    string issued_date = 7;
+    string valid_until = 8;
+	string number = 9; 
+    string additional_number = 10;
+	string date_of_birth = 11;
+	string place_of_birth_en = 12;
+    string email = 13;
+    string phone = 14;
+    string middle_name = 15;
+    string gender = 16;
+    string place_of_birth = 17;
+    string country_of_residence = 18;
+    string post_code = 19;
+    string town = 20;
+    string street = 21;
+    string state = 22;
+    string flat_number = 23;
+}
+
+message GetApplicantInfoByExternalIdRequest {
+    string externalId = 1;
+}
+
+message GenerateTokenRequest {
+    string user_id = 1;
+}
+
+message GenerateTokenResponse {
+    string token = 1;
+    string user_id = 2;
+}
+
+message GetApplicantInfoRequest {
+    string applicant_id = 1; 
+}
+
+message GetApplicantInfoResponse {
+    string id_doc_type = 1;
+	string country = 2;
+    string first_name = 3;
+	string first_name_en = 4;
+	string last_name = 5;
+	string last_name_en = 6;
+    string issued_date = 7;
+    string valid_until = 8;
+	string number = 9; 
+    string additional_number = 10;
+	string date_of_birth = 11;
+	string place_of_birth_en = 12;
+}
+
+message GetKeyStatsRequest {
+    string ric = 1;
+    string ticker = 2;
+    string country_code = 3;
+}
+
+message GetKeyStatsResponse {
+    KeyStats key_stats = 1;
+}
+
+message GetBussinessSummaryRequest {
+    string ticker = 1;
+    string country_code = 2;
+    string lang = 3;
+    string ric = 4;
+}
+
+message GetStockNewsRequest {
+    string language = 1;
+    string ric = 2;
+}
+
+message GetBussinessSummaryResponse {
+    BussinessSummary bussiness_summary = 1;
+}
+
+message GetStockNewsResponse {
+    repeated StockNews stock_news = 1;
+}
+
+message CreateApplicantRequest {
+    string investor_id = 1;
+    string email = 2;
+    string phone = 3;
+    PersonalInfo personal_info = 4; 
+    Address address = 5;
+}
+
+message PersonalInfo {
+    string first_name = 4;
+    string last_name = 5;
+    string middle_name = 6;
+    string gender = 7;
+    string date_of_birth = 8;
+    string place_of_birth = 9;
+    string country_of_birth = 10;
+    string country = 11;
+    string address = 12;
+    string nationality = 13;
+    string phone_number = 14;
+    string valid_until = 19;
+    string issuet_date = 20;
+    string citizenship = 21;
+    string date_of_issue = 22;
+    string date_of_expiry = 23;
+    string issue_by = 24;
+    string passport_number = 25;
+}
+
+message Address {
+    string country = 1;
+    string postcode = 2;
+    string town = 3;
+    string street = 4;
+    string state = 5;
+    string flat_number = 6;
+}
+
+message CreateApplicantResponse {
+    string application_id = 1;
+    string review_status = 2;
+}
+
+message UploadDocumentRequest {
+    UploadDocumentMetadata metadata = 1;
+    string minio_name = 2;
+}
+
+message UploadDocumentMetadata {
+    string investor_id = 1;
+    string document_type = 2;
+    string document_name = 3;
+}
+
+message UploadDocumentResponse {
+    string errors = 1;
+    string warnings = 2;
+}
+
+message GetInstrumentHistoryRequest{
+    string symbol_id = 1;
+    string range_type = 2;
+}
+
+message GetInstrumentByIDRequest{
+    string instrument_id = 1;
+    string investor_id = 2;
+}
+
+message GetInstrumentHistoryResponse {  
+    repeated InstrumentHistory instruents = 1; 
+}
+
+message InstrumentHistory{
+    string symbol_id = 1;
+    int64 timestamp = 2;
+    string open = 3;
+    string close = 4;
+    string high = 5;
+    string low = 6;
+    string volume = 7;
+}
+
+message GetByIDRequest {
+    string id = 1;
+}
+
+message FilterInstrumentsResponse {
+    repeated FilterInstrument instruments = 1;
+}
+
+message FilterInstrument {
+    string id = 1;
+    string ticker = 2;
+    string icon = 3;
+    string name = 4;
+}
+
+message GetExchangesByTypeRequest{
+    string type = 1;
+}
+
+message FilterInstrumentsRequest {
+    string group = 1;
+    string exchange_id = 2;
+    string type = 3;
+    string name = 4;
+    string id = 5;
+    int32 limit = 6;
+    int32 page = 7;
+}
+
+message GetShortDetailsByStocksRequest {
+    repeated string symbols = 1;
+}
+
+message GetShortDetailsByStocksData{
+    string id = 1;
+    string name = 2;
+    string icon = 3; 
+}
+
+message GetShortDetailsByStocksResponse {
+    repeated GetShortDetailsByStocksData instruments = 1;
+}
+
+message GetSymbolIdsResponse {
+    repeated string ids = 1;
+}

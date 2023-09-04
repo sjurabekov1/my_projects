@@ -1,0 +1,331 @@
+syntax="proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+message FixType {
+    string id = 1;   
+}
+
+message FixSymbolOptionData {
+    string option_group_id = 1;
+    string right = 2;
+    string strike_price = 3;
+}
+
+message FixSymbolIdentifiers {
+    string ISIN = 1;
+    string FIGI = 2;
+    string CUSIP = 3;
+    string RIC = 4;
+    string SEDOL = 5;
+}
+
+message FixSymbol {
+    string id = 1;
+    string ticker = 2;
+    string name = 3;
+    string description = 4;
+    string group = 5;
+    string underlying_symbol_id = 6;
+    string exchange = 7;
+    int64 expiration = 8;
+    string country = 9;
+    string type = 10;
+    FixSymbolOptionData option_data = 11;
+    string mpi = 12;
+    string currency = 13;
+    FixSymbolIdentifiers identifiers = 14;
+	string icon = 15;
+	bool is_favorite = 16;
+	MusaffoData musaffa = 17;
+	BussinessSummary bussiness_summary = 18;
+	KeyStats key_stats = 19;
+	repeated PurchaseStatus purchase_statuses = 20;
+	bool is_buyable = 21;
+	bool is_sellabe = 22;
+	bool active = 23;
+	string stock_type = 24;
+}
+
+message KeyStatsNew {
+	float average_daily_volume_for_last_10_days = 2;
+	float market_capitalization = 3;
+	float price_change_1_day = 4;
+	float price_change_5_day = 5;
+    float eps = 6;
+	float dividient_per_share = 7;
+    float p_e = 8;
+	float dividient_yield = 9;
+	float current_ratio = 10;
+	float l_t_debt_equility = 11;
+	float quick_ratio = 12;
+	float roa = 13;
+	float roi = 14;  
+	float total_debt_equity = 17; 
+    double dividient = 15;
+    double dividient_yield_ratio = 16;
+}
+
+message PurchaseStatus {
+	string pocket_id = 1;
+	int32 count = 2;
+	int32 sell_count = 3;
+}
+
+message MusaffoData {
+	string id_musaffo = 1;
+	string company_name = 2;
+	string stock_name = 3;
+	string shariah_compliance_status = 4;
+	int64 compliance_ranking = 5;
+	BusinessActivity business_activity = 6;
+	interestBearingSecuritiesAndAssets interest_bearing_securities_and_assets = 7;
+	interestBearingDebt interest_bearing_debt = 8;
+	string report_source = 9;
+	string report_date = 10;
+	double total_revenue = 11;
+	double trailing_36_month_avr_cap = 12;
+	string last_update = 13;
+}
+
+message interestBearingSecuritiesAndAssets {
+	float interestRatio = 1;
+	string status = 2;
+	float amount = 3;
+}
+
+message interestBearingDebt {
+	float debtRatio = 1;
+	string status = 2;
+	float amount = 3;
+}
+
+message BusinessActivity {
+	double not_halal = 1;
+	double questionable = 2;
+	double halal = 3;
+	string status = 4;
+	double hahal_revenue = 5;
+	double doubtful_revenue = 6;
+	double not_halal_revenue = 7;
+}
+
+message FixUserAccount {
+    string status = 1;
+    string account_id = 2;
+}
+
+message FixOrderParameters {
+	string account_id = 1;
+	string instrument = 2;
+	string symbol_id = 3; 
+	string side = 4; 
+	string quantity = 5; 
+	string order_type = 6; 
+	string stop_price = 7; 
+	string limit_price = 8; 
+	string part_quantity = 9; 
+	string place_interval = 10; 
+	string price_distance = 11;
+	string duration = 12;
+	string gtt_expiration = 13;
+	string client_tag = 14;
+	string take_profit = 15;
+	string stop_loss = 16;
+	string oco_group = 17;
+	string if_done_parent_id = 18;
+	string user_id = 19; 
+}
+
+message FixOrderFills {
+    string time = 1;
+	string timestamp = 2;
+	string quantity = 3;
+	string price = 4;
+	int32 position = 5;
+}
+
+message FixOrderState {
+	string status = 1;
+	string last_update = 2;
+	repeated FixOrderFills fills = 3;
+	string reason = 4;
+}
+
+message FixOrderResponse {
+	string id = 1;
+	string order_id = 2;
+	string place_time = 3;
+	string current_modification_id = 4;
+	string account_id = 5;
+	string username = 6;
+	string client_tag = 7;
+	string order_type = 8;
+	string stop_price = 9;
+	FixOrderState OrderState = 10;
+    FixOrderParameters OrderParameters = 11;
+}
+
+message FixCurrencyPositionResponse {
+	string code = 1;
+	string value = 2;
+	string converted_value = 3;
+}
+
+message FixInstrumentPositionResponse {
+	string id = 1;
+	string symbol_type = 2;
+	string quantity = 3;
+	string currency = 4;
+	string price = 5;
+	string average_price = 6;
+	string pnl = 7;
+	string converted_pnl = 8;
+	string value = 9;
+	string converted_value = 10;
+}
+
+message FixAccountSummary  {
+	string account = 1;
+	string currency = 2;
+	string session_date = 3;
+	int64 timestamp = 4;
+	string net_asset_value = 5;
+	string free_money = 6;
+	string money_used_for_margin = 7;
+	string margin_utilization = 8;
+	repeated FixCurrencyPositionResponse currencies = 9;
+	repeated FixInstrumentPositionResponse positions = 10;
+}
+
+message FixGroupResponse {
+    string group = 1;
+    string name = 2;
+    repeated string types = 3;
+    string exchange = 4;
+}
+
+message FixExchangesResponse {
+    string id = 1;
+    string name = 2;
+    string country = 3;
+}
+
+message FixOHLCResponse {
+    int64 timestamp = 1;
+    string open = 2;
+    string high = 3;
+    string low = 4;
+    string close = 5;
+    string volume = 6;
+}
+
+message FixDailyChangeResponse {
+    string symbol_id = 1;
+    string base_price = 2;
+    string daily_change = 3;
+}
+
+message FixAskTicks {
+	string value = 1;
+    string size = 2;
+}
+
+message FixBidTicks {
+	string value = 1;
+    string size = 2;
+}
+
+message FixTicksResponse {
+	uint64 timestamp = 1;
+	string symbolId = 2;
+	repeated FixBidTicks bid = 3;
+	repeated FixAskTicks ask = 4;
+	string value = 5;
+	string size = 6;
+}
+
+message FixOrderUpdatesStream {
+	string event = 1;
+	FixOrderResponse order = 2;
+}
+
+message SumsubPassportInfo {
+	string 	valid_until = 1;
+	string issuet_date = 2;
+	string number = 3;
+}
+
+message BussinessSummary {
+	string last_updated = 1;
+	string lang = 2;
+	string source_filling_date = 3;
+	string source_filling_type = 4;
+	string value = 5;
+	string ticker = 6;
+}
+message KeyStats {
+	string average_daily_volume_for_last_10_days = 1;
+	string market_capitalization = 2;
+	string price_change_1_day = 3;
+	string price_change_5_day = 4;
+    string eps = 5;
+	string dividient_per_share = 6;
+    string p_e = 7;
+	string dividient_yield = 8;
+	string current_ratio = 9;
+	string l_t_debt_equility = 10;
+	string quick_ratio = 11;
+	string roa = 12;
+	string roi = 13;  
+	string total_debt_equity = 14; 
+    double dividient = 15;
+    double dividient_yield_ratio = 16;
+	string total_assets = 17;
+	string beta = 18;
+	string ebit = 19;
+	string roce = 20;
+}
+
+message StockNews {
+	string id = 1;
+	string header = 2;
+	string created_at = 3;
+	string ric = 4;
+}
+
+message FavouriteInstrument {
+    string id = 1;
+    string investor_id = 2;
+    string instrument_id = 3;
+    string instrument_ticker = 4;
+    string name = 5;
+    string icon = 6;
+}
+
+message Currency {
+	string id = 1;
+	int32 fraction_digits = 2;
+	string icon = 3;
+}
+
+message POR {
+	string issued_date = 1;
+	string verfieid_at = 2;
+	string address = 3;
+	string front_photo = 4;
+	string back_photo = 5;
+	string zip_code = 6;
+	string country = 7;
+}
+
+message reviewResult {
+    string reviewAnswer = 1;
+}
+
+message Identity {
+    string type = 1;
+	reviewResult reviewResult = 2;
+    repeated int64 imageIds = 3;
+}

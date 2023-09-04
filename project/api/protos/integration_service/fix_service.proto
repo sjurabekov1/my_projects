@@ -1,0 +1,165 @@
+syntax="proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+import "google/protobuf/empty.proto";
+import "integration.proto";
+
+service FixService {
+    rpc GetTypes(google.protobuf.Empty) returns (GetTypesResponse) {};
+    rpc GetInstrumentsByType(GetInstrumentsByTypeRequest) returns (GetInstrumentsResponse) {};
+    rpc GetUserAccounts(google.protobuf.Empty) returns (GetUserAccountsResponse) {};
+    rpc PlaceOrder(FixOrderParameters) returns (PlaceOrderResponse) {};
+    rpc GetAccountSummary(GetAccountSummaryRequest) returns (FixAccountSummary) {};
+    rpc GetGroups(google.protobuf.Empty) returns (GetGroupsResponse) {};
+    rpc GetInstrumentByExchange(GetInstrumentsByExchangeRequest) returns (GetInstrumentsResponse) {};
+    rpc GetExchanges(google.protobuf.Empty) returns (GetExchangesResponse) {};
+    rpc GetInstrumentByGroup(GetInstrumentsByGroupRequest) returns (GetInstrumentsResponse) {};
+    // rpc GetInstruments(google.protobuf.Empty) returns (stream GetInstrumentsResponse) {} // sending via stream because of max limit 4mb
+    rpc GetOHLC(GetOHLCRequest) returns (GetOHLCResponse) {};
+    rpc GetDailyChange(GetDailyChangeRequest) returns (GetDailyChangeResponse) {};
+    rpc GetActiveOrders(google.protobuf.Empty) returns (GetActiveOrdersResponse) {};
+    rpc GetTicks(GetTicksRequest) returns (GetTicksResponse) {};
+    rpc GetLastQuote(GetLastQuoteRequest) returns (GetLastQuoteResponse) {};
+    rpc GetLastQuoteMap(GetLastQuoteRequest) returns (GetLastQuoteMapResponse) {};
+    rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {};
+    rpc ModifyOrder(ModifyOrderRequest) returns (ModifyOrderResponse) {};
+    rpc GetInstrumentSchedule(GetInstrumentScheduleRequest) returns (GetInstrumentScheduleResponse) {};
+    rpc GetOrderUpdatesStream(google.protobuf.Empty) returns (stream GetOrderUpdatesStreamResponse) {};
+    rpc GetCurrencies(google.protobuf.Empty) returns (GetCurrenciesResponse) {};
+}
+
+message GetCurrenciesResponse{
+    repeated Currency currencies = 1;
+}
+
+message GetOrderUpdatesStreamResponse {
+    FixOrderUpdatesStream order_update = 1;
+}
+
+message GetTypesResponse {
+    repeated FixType fix_types = 1;
+}
+
+message GetInstrumentsByTypeRequest {
+    string symbol_type = 1;
+}
+
+message GetInstrumentsResponse {
+    repeated FixSymbol instruments = 1;
+}
+
+message GetUserAccountsResponse {
+    repeated FixUserAccount user_accounts = 1;
+}
+
+message GetAccountSummaryRequest {
+    string account_id = 1;
+    string currency = 2;
+}
+
+message PlaceOrderResponse {
+    repeated FixOrderResponse orders = 1;
+}
+
+message GetGroupsResponse {
+    repeated FixGroupResponse groups = 1;
+}
+
+message GetExchangesResponse {
+    repeated FixExchangesResponse exchanges = 1;
+}
+
+message GetInstrumentsByExchangeRequest {
+    string exchange_id = 1;
+}
+
+message GetInstrumentsByGroupRequest {
+    string group_id = 1;
+}
+
+message GetOHLCRequest {
+    string symbol_id = 1;
+    int32 duration = 2;
+    int64 from = 3;
+    int64 to = 4;
+}
+
+message GetOHLCResponse {
+    repeated FixOHLCResponse ohlc_list = 1;
+}
+
+message GetDailyChangeRequest {
+    repeated string symbol_ids = 1;
+}
+
+message GetDailyChangeResponse {
+    repeated FixDailyChangeResponse change_list = 1;
+}
+
+message GetActiveOrdersResponse {
+    repeated FixOrderResponse orders = 1;
+}
+
+message GetTicksRequest {
+    string symbol_id = 1;
+    int64 from = 2;
+    int64 to = 3;
+}
+
+message GetTicksResponse {
+    repeated FixTicksResponse ticks = 1;
+}
+
+message GetLastQuoteResponse {
+    repeated FixTicksResponse ticks = 1;
+}
+
+message GetLastQuoteMapResponse {
+    map<string, FixTicksResponse> last_quote = 1;
+}
+
+message GetLastQuoteRequest {
+    repeated string symbols_id = 1;
+}
+
+message GetOrderRequest {
+    string order_id = 1;
+}
+
+message GetOrderResponse {
+    FixOrderResponse order = 1;
+}
+
+message ModifyOrderRequest {
+    string order_id = 1;
+    string action = 2;
+    string quantity = 3;
+    string limit_price = 4;
+}
+
+message ModifyOrderResponse {
+    FixOrderResponse order = 1;
+}
+
+message GetInstrumentScheduleRequest {
+    string symbol_id = 1;
+    int32 timezone = 2;
+}
+
+message IntervalPeriod {
+    int64 start = 1;
+    int64 end = 2;
+}
+
+message GetInstrumentScheduleData{
+    string name = 1;
+    IntervalPeriod period = 2;
+}
+
+message GetInstrumentScheduleResponse {
+    string current_status = 1;
+    string next_status = 2;
+    string until_next_status = 3;
+}

@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package settings_service;
+option go_package="genproto/settings_service";
+
+import "google/protobuf/empty.proto";
+import "settings.proto";
+
+service PingService {
+    rpc Ping(google.protobuf.Empty) returns (PongResponse) {}
+    rpc SendMessage(PingMessage) returns (PongMessage) {}
+}
+
+message PongResponse {
+    string message = 1;
+}

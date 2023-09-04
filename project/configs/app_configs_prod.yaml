@@ -1,0 +1,22 @@
+project:
+  name: &projectName my_new_project
+  version: 1.0.0
+  timeout: 9s
+  swagger_enabled: false
+  max_body_mb: 20
+  cache_timeout: 30
+logging:
+  projectName: *projectName
+  code: zap
+  encoding: json
+  level: info
+  dateTimeFormat: 2006-01-02 15:04:05
+  dateFormat: 2006-01-02
+  enableCaller: true
+  devMode: false
+http:
+  host: 127.0.0.1
+  port: 8080
+grpc:
+  host: 127.0.0.1
+  port: 8081

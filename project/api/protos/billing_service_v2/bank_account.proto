@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package billing_service_v2;
+option go_package = "genproto/billing_service_v2";
+
+message UpsertBankAccountCurrencyRequest {
+    string id              = 1;
+    string bank_account_id = 2;
+    string currency_id     = 3;
+}
+
+message CreateBankAccountRequest {
+    string bank_account_name            = 2;
+    string bic_code                     = 3;
+    string iban_code                    = 4;
+    string swift_code                   = 5;
+    int32 currency                      = 6;
+    string region                       = 7;
+    string bank_address                 = 8;
+    string phone_number                 = 9;
+    string payment_reference            = 10;
+    int64 registration_number           = 11;
+    string salesforce_id                = 12;
+    string owner_name                   = 13;
+    string transactions_reference       = 14;
+    string receiving_party_bank_details = 15;
+}
+
+message CreateBankAccountResponse {
+    string id                           = 1;
+    string bank_account_name            = 2;
+    string bic_code                     = 3;
+    string iban_code                    = 4;
+    string swift_code                   = 5;
+    int32 currency                      = 6;
+    string region                       = 7;
+    string bank_address                 = 8;
+    string phone_number                 = 9;
+    string payment_reference            = 10;
+    int64 registration_number           = 11;
+    string owner_name                   = 12;
+    string transactions_reference       = 13;
+    string receiving_party_bank_details = 14;
+}
+
+message GetBankAccountRequest {
+    string currency = 1;
+    string region   = 2;
+    string id       = 3;
+}
+
+message GetBankAccountResponse {
+    string bank_account_name            = 1;
+    string bic_code                     = 2;
+    string iban_code                    = 3;
+    string swift_code                   = 4;
+    string bank_address                 = 5;
+    string phone_number                 = 6;
+    string payment_reference            = 7;
+    int64 registration_number           = 8;
+    string salesforce_id                = 9;
+    string owner_name                   = 10;
+    string transactions_reference       = 11;
+    string receiving_party_bank_details = 12;
+}
+
+message SetSalesforceIdRequest {
+    string operation_id  = 1;
+    string salesforce_id = 2;
+}
+
+message UpdateBankAccountRequest {
+    string id                           = 1;
+    string bank_account_name            = 2;
+    string bic_code                     = 3;
+    string iban_code                    = 4;
+    string swift_code                   = 5;
+    int64 currency                      = 6;
+    string region                       = 7;
+    string bank_address                 = 8;
+    string phone_number                 = 9;
+    string payment_reference            = 10;
+    int64 registration_number           = 11;
+    string salesforce_id                = 12;
+    string owner_name                   = 13;
+    string transactions_reference       = 14;
+    string receiving_party_bank_details = 15;
+}
+
+message SetSalesforceIdResponse {
+    string salesforce_id = 1;
+}
+
+message UpdateBankAccountResponse {}
+
+message UpsertBankAccountCurrencyResponse {}
+
+service BankService {
+    rpc CreateBankAccount(CreateBankAccountRequest) returns (CreateBankAccountResponse) {};
+    rpc GetBankAccount(GetBankAccountRequest) returns (GetBankAccountResponse) {};
+    rpc SetSalesforceId(SetSalesforceIdRequest) returns (SetSalesforceIdResponse) {};
+    rpc UpdateBankAccount(UpdateBankAccountRequest) returns (UpdateBankAccountResponse) {};
+    rpc UpsertBankAccountCurrency(UpsertBankAccountCurrencyRequest) returns (UpsertBankAccountCurrencyResponse) {};
+}

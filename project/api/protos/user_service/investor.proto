@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package user_service;
+option go_package="genproto/user_service";
+
+message Account{
+    string id = 1;
+    string investor_id = 2;
+    string iban_id = 3;
+}
+
+message DocumentMetadata {
+    string investor_id = 1;
+    string document_type = 2;
+    string document_name = 3;
+    string minio_name = 4;
+    string created_at = 5;
+}
+
+message Country {
+    int32 id = 1;
+    string iso = 2;
+    string name = 3;
+    string nicename = 4;
+    string iso3 = 5;
+    int64 numcode = 6;
+    int64 phonecode = 7;
+    string flag = 8;
+}

@@ -1,0 +1,40 @@
+syntax="proto3";
+
+package user_service;
+option go_package="genproto/user_service";
+
+import "google/protobuf/empty.proto";
+
+
+service AgreementService {
+    rpc Create(CreateAgreement) returns (AgreementId) {}
+    rpc Update(Agreement) returns (AgreementId) {}
+    rpc Get(AgreementId) returns (Agreement) {}
+    rpc GetAll(GetAllAgreementsRequest) returns (GetAllAgreementsResponse) {}
+    rpc Delete(AgreementId) returns (google.protobuf.Empty) {}
+}
+
+message Agreement {
+    string id = 1;
+    string name = 2;
+    string content = 3;
+}
+
+message CreateAgreement{
+    string name = 1;
+    string content = 2;
+}
+
+message AgreementId {
+    string id = 1;
+}
+
+message GetAllAgreementsResponse {
+    repeated Agreement agreements = 1;
+    int32 count = 2;
+}
+
+message GetAllAgreementsRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+}

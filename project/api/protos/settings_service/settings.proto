@@ -1,0 +1,13 @@
+syntax="proto3";
+
+package settings_service;
+option go_package="genproto/settings_service";
+
+message PingMessage {
+    string message = 2;
+}
+
+message PongMessage {
+    string id = 1;
+    string message = 2;
+}

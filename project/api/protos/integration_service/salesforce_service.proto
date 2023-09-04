@@ -1,0 +1,678 @@
+syntax="proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+import "google/protobuf/empty.proto";
+import "salesforce.proto";
+import "integration.proto";
+
+service SalesforceService {
+    rpc CreateAccount(Account) returns (CreateResponse) {}
+    rpc UpdateAccount(Account) returns (google.protobuf.Empty) {}
+    rpc GetAccount(GetAccountRequest) returns (Account) {}
+    rpc CreateFinancialAccount(CreateFinancialAccountRequest) returns (CreateResponse) {}
+    rpc CreateKYCData(CreateKYCRequest) returns (CreateResponse) {}
+    rpc PurchaseStock(StockPurchaseRequest) returns (CreateResponse) {}
+    rpc CreateTransaction(TransactionRequest) returns (CreateResponse) {}
+    rpc UpdateFinancialAccountBalance(UpdateFinancialAccountBalanceRequest) returns (google.protobuf.Empty) {}
+    rpc GetBrokerageAccount(GetBrokerageAccountRequest) returns (GetBrokerageAccountResponse) {}
+    rpc GetNewsFeeds(google.protobuf.Empty) returns (GetNewsFeedsResponse) {}
+    rpc PostNewsFeeds(InvestorPostRequest) returns (CreateResponse) {}
+    rpc CreateInstrument(CreateInstrumentRequest) returns (CreateResponse) {}
+    rpc GetNotifications(google.protobuf.Empty) returns (GetNotificationsResponse) {}
+    rpc CreateCurrency(Currency) returns (CreateResponse) {}
+    rpc CreateOperationHistory(CreateOperationHistoryRequest) returns (CreateResponse) {}
+    rpc GetStockID(GetStockIDRequest) returns (GetStockIDResponse) {}
+    rpc GetStockIdBySymbolId(GetStockIdBySymbolIdRequest) returns (GetStockIdBySymbolIdResponse) {}
+    rpc UpdateUserStock(UpdateUserStockRequest) returns (google.protobuf.Empty) {}
+    rpc CreateOrder(CreateOrderRequest) returns (CreateResponse) {}
+    rpc FetchDocuments(FetchDocumentsRequest) returns (FetchDocumentsResponse) {}
+    rpc GetRegionID(GetRegionIDRequest) returns (GetRegionIDResponse) {}
+    rpc GetTaxList(GetTaxListRequest) returns (GetTaxListResponse) {}
+    rpc GetComissionGroupID(GetComissionGroupIDRequest) returns (GetComissionGroupIDResponse) {}
+    rpc GetDocumentByPublishedVersionId(GetDocumentByPublishedVersionIdRequest) returns (GetDocumentByPublishedVersionIdResponse) {}
+    rpc CreateTaxOfOperation (CreateTaxOfOperationRequest) returns (google.protobuf.Empty) {}
+    rpc GetSymbolIDBySalesforceID(GetSymbolIDBySalesforceIDRequest) returns (GetSymbolIDBySalesforceIDResponse) {}
+    rpc GetOperatingHour(google.protobuf.Empty) returns (GetOperatingHourResponse) {}
+    rpc GetObjectByPrefix(GetObjectByPrefixRequest) returns (GetObjectByPrefixResponse) {}
+    rpc GetContentDocument(GetContentDocumentRequest) returns(GetContentDocumentResponse) {}
+    rpc GetNotificationTemplate(GetNotificationTemplateRequest) returns (GetNotificationTemplateResponse) {}
+    rpc CreateDividientByInstrument(CreateDividientByInstrumentRequest) returns (google.protobuf.Empty) {}
+    rpc CreatePost(CreatePostRequest) returns (CreatePostResponse) {}
+    rpc DeletePost(DeletePostRequest) returns (google.protobuf.Empty) {}
+    rpc UpdatePost(CreatePostRequest) returns (google.protobuf.Empty) {}
+    rpc CommentToPost(CommentToPostRequest) returns (CommentToPostResponse) {}
+    rpc UpdateComment(CommentToPostRequest) returns (google.protobuf.Empty) {}
+    rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse) {}
+    rpc LikeToPost(LikeRequest) returns (google.protobuf.Empty) {}
+    rpc ToFollow(FollowRequest) returns (google.protobuf.Empty) {}
+    rpc GetPosts(GetPostsRequest) returns (GetPostsResponse) {}
+    rpc GetOnePost(GetOnePostRequest) returns (Post) {}
+    rpc DeleteComment(DeleteCommentRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteLike(LikeRequest) returns (google.protobuf.Empty) {}
+    rpc UnFollow(FollowRequest) returns (google.protobuf.Empty) {}
+    rpc CreateAssets(CreateAssetsRequest) returns (google.protobuf.Empty) {}
+    rpc GetInstrumentsOfPosts(GetInstrumentsOfPostsRequest) returns (GetInstrumentsOfPostsResponse) {}
+    rpc DeleteInstrument(DeleteInstrumentRequest) returns (google.protobuf.Empty){}
+    rpc IsLiked(IsLikedRequest) returns (IsLikedResponse) {}
+    rpc GetUnsentNotification(GetUnsentNotificationRequest) returns (GetUnsentNotificationResponse) {}
+    rpc CreateNotification(Notificationn) returns (google.protobuf.Empty) {}
+    rpc UpdateNotification(Notificationn) returns (google.protobuf.Empty) {}
+    rpc CreateNotificationComposite(CreateNotificationCompositeRequest) returns (google.protobuf.Empty) {}
+    rpc GetPostWriterData(GetPostWriterDataRequest) returns (GetPostWriterDataResponse) {}
+    rpc BulkInsert(stream BulkInsertRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateAccountComposite(UpdateAccountCompositeRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateTransaction(UpdateTransactionRequest) returns (google.protobuf.Empty) {}
+    rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse) {}
+    rpc UpdateTransactionNew(UpdateTransactionNewRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateFinancialAccount(UpdateFinancialAccountRequest) returns (UpdateFinancialAccountResponse) {}
+    rpc UpdateFinancialAccountComposite(UpdateFinancialAccountCompositeRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateUserStockComposite(UpdateUserStockCompositeRequest) returns (google.protobuf.Empty) {}
+    rpc GetFinancialAccount(GetFinancialAccountRequest) returns (GetFinancialAccountResponse) {}
+    rpc UpdateModeratedTrading(UpdateModeratedTradingRequest) returns (google.protobuf.Empty) {}
+}
+
+message UpdateFinancialAccountCompositeRequest {
+    repeated UpdateFinancialAccountRequest financial_accounts = 1;
+}
+
+message GetFinancialAccountRequest {
+    string user_id = 1;
+}
+
+message GetFinancialAccountResponse {
+    repeated UpdateFinancialAccountRequest pockets = 1;
+}
+
+message UpdateFinancialAccountRequest {
+    string id = 1;
+    string name = 2;
+    string account_number = 3;
+    double balance = 4;
+    bool active = 5;
+    string cash_balance = 6;
+    string last_update = 7;
+    string type = 8;
+    string pocket_name = 9;
+}
+
+message UpdateModeratedTradingRequest {
+    string id = 1;
+    string status = 2;
+}
+
+message UpdateFinancialAccountResponse {
+    string id = 1;
+}
+message GetTransactionRequest {
+    string id = 1;
+}
+
+message UpdateTransactionNewRequest {
+    int32 amount = 1;
+    string bank_account = 2;
+    string currency = 3;
+    string description = 4;
+    string investor_bank_account = 5;
+    bool manual_action = 6;
+    string market = 7;
+    string operation = 8;
+    string pocket = 9;
+    string reason = 10;
+    string user = 11;
+    string name = 14;
+    string status = 15;
+    string id = 16;
+}
+
+message GetTransactionResponse {
+    int32 amount = 1;
+    string bank_account = 2;
+    string currency = 3;
+    string description = 4;
+    string investor_bank_account = 5;
+    bool manual_action = 6;
+    string market = 7;
+    string operation = 8;
+    string pocket = 9;
+    string reason = 10;
+    string user = 11;
+    string name = 14;
+    string status = 15;
+}
+
+message UpdateTransactionRequest {
+    string id = 1;
+    string status = 2;
+    string pocket_id  = 3;
+    string amount = 4;
+    string price_per_stock = 5;
+    string total_assets_value = 6;
+    string commission = 7;
+    string deposit_amount = 8;
+    string cash_balance = 9;
+    string execution_tax_cost = 10;
+    double min_fee = 11;
+    double hyssa_commission = 12;
+    double broker_commission = 13;
+    double partner_commission = 14;
+}
+
+message UpdateAccountCompositeRequest {
+    repeated Account accounts = 1;
+}
+
+message CreateNotificationCompositeRequest {
+    repeated Notificationn notifications = 1;
+}
+
+message BulkInsertRequest {
+    oneof data{
+        objectInfo info = 1;
+        bytes chunk_data = 2;
+    };
+}
+message objectInfo {
+    string object = 1;
+    string operation = 2;
+    string external_field_name = 3;
+}
+
+message GetPostWriterDataRequest {
+    string post_writer_id = 1;
+    string my_id = 2;   
+}
+
+message GetPostWriterDataResponse {
+    string investor_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string description = 4;
+    string user_img = 5;
+    string username = 6;
+    int32 following_count = 7;
+    int32 follower_count = 8;
+    bool is_followed = 9;
+    repeated PostData data = 10;
+}
+message PostData {
+    string id = 1;
+    string content = 2;
+    string title = 3;
+    string photo_url = 4;
+    int32 like_count = 5;
+    int32 comment_count = 6;
+    bool is_liked = 7;
+    repeated Instruments instruments = 8;
+    repeated Investors investors_of_likes = 9;
+    repeated Investors investors_of_comments = 10;
+}
+message Notificationn {
+    string id = 1;
+    string title = 2;
+    string message = 3;
+    string image_url = 4;
+    string recipient_id = 5;
+    string created_at = 6;
+    string type = 7;
+    string send_at = 8;
+    bool is_sent = 9;
+    string scheduled_notification_id = 10;
+    string investor_id = 11;
+    string notif_id = 12;
+}
+
+message GetUnsentNotificationRequest {
+    string id = 1;
+}
+message GetUnsentNotificationResponse {
+    repeated string investor_id = 1;
+}
+
+message IsLikedRequest  {
+    string investor_id = 1;
+    string post_id = 2;
+}
+message IsLikedResponse  {
+    bool is_liked = 1;
+}
+
+message DeleteInstrumentRequest {
+    string id = 1;
+}
+
+message GetStockIdBySymbolIdRequest {
+    string symbol = 1;
+}
+
+message GetStockIdBySymbolIdResponse {
+    string stock_id = 1;
+}
+
+message GetInstrumentsOfPostsRequest {
+    string id = 1;
+}
+
+message GetInstrumentsOfPostsResponse {
+    repeated Instrument instruments = 1;
+}
+
+message Instrument {
+    string id = 1;
+    string icon = 2;
+    string ticker = 3;
+    string name = 4;
+}
+
+message CreateAssetsRequest {
+    string name = 1;
+    string description = 2;
+    string type = 3;
+    string amount = 4;
+    string instrument_id = 5;
+    string financial_account = 6;
+    string joint_owner = 7;
+    string primary_owner = 8;
+    string side = 9;
+    string quantity = 10;
+    string purchased_at = 11;
+    string status = 12;
+    string order_id = 13;
+}
+
+message DeleteCommentRequest {
+    string id = 1;
+}
+
+message GetOnePostRequest {
+    string investor_id = 1;
+    string post_id = 2;
+}
+
+message GetPostsRequest {
+    string investor_id = 1;
+    string is_owner_id = 2;
+    string following = 3;
+    int32  limit = 4;
+    int32  page = 5; 
+}
+
+message GetPostsResponse {
+    repeated Post posts = 1;
+    int32 count = 2;
+}
+
+message Post {
+    string investor_id = 1;
+    bool is_followed = 2;
+    Data post_data = 3;
+    int32 like_count = 4;
+    int32 comment_count = 5;
+    string investor_name = 6;
+    string user_img = 7;
+    bool is_liked = 8;
+    string status = 9;
+    repeated Instruments instruments = 10;
+    repeated Investors investors_of_likes = 11;
+    repeated Investors investors_of_comments = 12;
+    bool is_commented = 13;
+}
+
+message Investors {
+    string investor_id = 1;
+    string name = 2;
+    string img = 3;
+}
+
+
+message Data {
+    string content = 1;
+    string title = 2;
+    string img = 3;
+    string id = 4;
+    string created_at = 14;
+
+}
+message FollowRequest {
+    string id = 1;
+    string follower_id = 2;
+    string investor_id = 3;
+}
+
+message LikeRequest {
+    string id = 1;
+    string post_id = 2;
+    string investor_id = 3;
+    string investor_name = 4;
+    string user_img = 5;
+}
+
+message GetCommentsRequest {
+    string post_id = 1;
+}
+message GetCommentsResponse {
+    repeated Comment comments = 1;
+}
+message Comment {
+    string id = 1;
+    string body = 2;
+    string investor_id = 3;
+    string user_img = 4;
+}
+
+message CommentToPostRequest {
+    string id = 1;
+    string investor_id = 2;
+    string post_id = 3;
+    string body = 4;
+    string deleted_at = 5;
+    string investor_name = 6;
+    string user_img = 7;
+}
+message CommentToPostResponse {
+    string id = 1;
+}
+
+message CreatePostRequest {
+    string id = 1;
+    string investor_id = 2;
+    string content = 3;
+    string img = 4;
+    string title = 5;
+    string status = 6;
+    repeated Instruments instruments = 7;
+    string deleted_at = 8;
+    string created_at = 9;
+    string investor_name = 10;
+    string user_img = 11;
+}
+message CreatePostResponse {
+    string id = 1;
+}
+
+message DeletePostRequest {
+    string id = 1;
+}
+message Instruments {
+    string id = 1;
+    string post_id = 2;
+    string instrument_id = 3;
+    string name = 4;
+    string icon = 5;
+    string ticker = 6;
+    string ric = 7;
+}
+
+
+message  CreateDividientByInstrumentRequest {
+    string ric = 1;
+    string language = 2;
+}
+
+message GetNotificationTemplateRequest{
+    string type = 1;
+}
+
+message GetNotificationTemplateResponse{
+    string title = 1;
+    string message = 2;
+    string id = 3;
+    string image = 4;
+}
+
+message GetContentDocumentRequest{
+    string id = 1;
+}
+
+message GetContentDocumentResponse{
+    string title = 1;
+    string extension = 2;
+    string description = 3;
+    string version_id = 4;
+}
+
+message GetObjectByPrefixRequest{
+    string prefix = 1;
+}
+
+message GetObjectByPrefixResponse {
+    string object = 1;
+}
+
+message GetOperatingHourResponse {
+    string id = 1;
+    string name = 2;
+    string starts_at = 3;
+    string ends_at = 4;
+    string status = 5;
+}
+
+message GetSymbolIDBySalesforceIDRequest {
+    string salesforce_id = 1;
+}
+
+message GetSymbolIDBySalesforceIDResponse {
+    string symbol_id = 1;
+    string currency = 2;
+}
+
+message CreateTaxOfOperationRequest {
+    repeated TaxInfo taxinfo = 1;
+}
+
+message TaxInfo {
+    string user_id = 1;
+    string user_pocket_id = 2;
+    string counterparty_id = 3;
+    string counterparty_pocket_id = 4;
+    string amount = 5;
+    string currency = 6;
+    string operation_id = 7;
+    string order_id = 8;
+    string transaction_id = 9;
+    string operating_hour_id = 10;
+    string status = 11;
+}
+
+message GetDocumentByPublishedVersionIdRequest {
+    string published_version_id = 1;
+    string title = 2;
+    string description = 3;
+    string extension = 4;
+}
+message GetDocumentByPublishedVersionIdResponse {
+    Document document = 1;
+}
+
+message GetComissionGroupIDRequest {
+    string user_id = 1;
+    string symbol_id = 2;
+}
+
+message GetComissionGroupIDResponse {
+    string comission_group_id = 1;
+    string description= 2;
+    string commission_rule = 3;
+}
+
+message GetTaxListRequest {
+    string user_id = 1;
+    string symbol_id = 2;
+}
+
+message GetTaxListResponse {
+    repeated Tax tax_list = 1;
+}
+
+message GetRegionIDRequest {
+    string region_aplha_code = 1;
+}
+
+message GetRegionIDResponse {
+    string region_id = 1;
+}
+
+message FetchDocumentsRequest{
+    string object_id = 1;
+}
+
+message FetchDocumentsResponse {
+    repeated Document documents = 1;
+}
+
+message GetAccountRequest {
+    string account_id = 1;
+}
+
+message GetStockIDRequest{
+    string ric = 1;
+}
+
+message GetStockIDResponse {
+    string id = 1;
+    bool selling_enabled = 2;
+    bool buying_enabled = 3;
+    bool active = 4;
+}
+
+message UpdateUserStockRequest {
+    string user_id = 1;
+    string stock_id = 2;
+    string side = 3;
+    int32 quantity = 4;
+    string pocket_id = 5;
+}
+
+message UpdateUserStockCompositeRequest {
+    repeated UpdateUserStockRequest user_stocks_request = 1;
+}
+
+message CreateOrderRequest {
+    string user = 1;
+    string name = 2;
+    string InstrumentId = 3;
+    string pocket_id = 4;
+    string operation_id = 5;
+    string quantity = 6;
+    string currency = 7;
+    string status = 8;
+    string amount = 9;
+}
+
+message CreateOperationHistoryRequest {
+    string investor_id = 1;
+    string pocket_id = 2;
+    string amount = 3;
+    string currency = 4;
+    string operation_id = 5;
+    string instrument_id = 6;
+    int32 shares = 7;
+}
+
+message GetNotificationsResponse {
+    repeated Notification notification = 1;
+}
+
+message CreateFinancialAccountRequest {
+    string investor_id = 1;
+    string financial_account_id = 2;
+    string type = 3;
+}
+
+message CreateFinancialAccountRequest1 {
+        string investor_id = 1;
+    string financial_account_id = 2;
+    string type = 3;
+}
+
+message InvestorPostRequest {
+    string investor_id = 1;
+    NewsFeed data = 2;
+}
+
+message UpdateFinancialAccountBalanceRequest {
+    string account_id = 1;
+    string amount = 2;
+    string transaction_type = 3;
+    string status = 4;
+}
+
+message GetNewsFeedsResponse {
+    repeated NewsFeed news_feeds = 1;
+}
+
+message GetBrokerageAccountRequest{
+    string id = 1;
+}
+message GetBrokerageAccountResponse {
+    repeated BrokerageAccount accounts = 1; 
+}
+
+message TransactionRequest{
+    string amount = 1;
+    string card_account_id = 2;
+    string tranaction_type= 3;
+    string transaction_date = 4;
+    string transaction_status = 5;
+    string description = 6;
+    string financial_account = 7;
+    int32 shares = 8;
+    string bank_account_id = 9;
+    string currency = 10;
+    string operation = 11;
+    string user_id = 12;
+    string investor_bank_account = 13;
+    bool manual_action = 14;
+    string deposit_amount = 15;
+    string commission = 16;
+    string stock = 17;
+    string quantity = 18;
+    string price_per_stock = 19;
+    string total_assets_value = 20;
+    string company = 21;
+    double min_fee = 22;
+    double hyssa_commission = 23;
+    double broker_commission = 24;
+    double partner_commission = 25;
+    string broker = 26;
+    string partner = 27;
+    double discount = 28;
+}
+
+message CreateResponse {
+    string id = 1;
+    string error = 2;
+}
+
+message CreateKYCRequest {
+    string account_id = 1;
+    string address = 2;
+    string country_citizenship = 3;
+    string country_residense = 4;
+    bool is_test_account = 5;
+    string kyc_status = 6;
+    string passport_expiry_date = 7;
+    string passport_number = 8;
+    string passport_photo = 9;
+    string passport_provided_date = 10;
+    float pontential_aum = 11;
+    string tax_number = 12;
+    string tax_residence = 13;
+    int32 zip_code = 14;
+}
+
+message StockPurchaseRequest {
+    string financial_account_id = 1;
+    string name = 2;
+    string exchange = 3;
+    float price = 4;
+    int64 shares = 5;
+}
+
+message CreateInstrumentRequest {
+    FixSymbol fix = 1;
+    KeyStats key_stats = 2;
+    MusaffoData musaffo_data = 3;
+}
+
